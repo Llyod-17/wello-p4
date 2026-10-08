@@ -18,7 +18,7 @@
       <div class="card-body">
         <h4 class="card-title">{{ $p->name }}</h4>
         <p class="card-price mb-md">Rp. {{ number_format($p->price, 0, ',', '.') }}</p>
-        <a href="/detail" class="btn btn-primary btn-block">Lihat Detail</a>
+        <a href="/detail/{{ $p->id }}" class="btn btn-primary btn-block">Lihat Detail</a>
       </div>
     </div>
     @empty
