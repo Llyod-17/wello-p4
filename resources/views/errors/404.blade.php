@@ -262,7 +262,7 @@
 
   <p class="e404-hint" data-404-seed-hint>
     <svg viewBox="0 0 40 40" aria-hidden="true" width="20" height="20"><use href="#vg-leaf"/></svg>
-    Klik di mana saja untuk menyemaiBuscar
+    Klik di mana saja untuk menyemai benih
   </p>
 
   <p class="e404-foot">&copy; {{ date('Y') }} Wello &mdash; Fresh Groceries</p>

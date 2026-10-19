@@ -15,3 +15,7 @@ Route::get('/checkout', function () {
 Route::get('/berhasil', function () {
     return view('berhasil');
 });
+
+Route::get('/404', function () {
+    return view('errors.404');
+});

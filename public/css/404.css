@@ -1,0 +1,640 @@
+/* ============================================
+   404 INTERACTIVE PAGE — DETEKTIF BROKOLI
+   Style matching Vitality Grocer & Walking Reference
+   ============================================ */
+
+:root {
+  --e404-bg: #F5F7F2;
+  --e404-surface: #FFFFFF;
+  --e404-primary: #7CB342;
+  --e404-primary-dark: #3C6A00;
+  --e404-primary-light: #9DD761;
+  --e404-accent: #FB8C00;
+  --e404-text: #191C1A;
+  --e404-text-muted: #424939;
+  --e404-text-light: #737A68;
+  --e404-border: #C2C9B5;
+  --e404-digit-color: #E6ECD8;
+  --e404-halo-bg: #EAEFD9;
+}
+
+/* Accessibility Skip Link */
+.e404-skip {
+  position: absolute;
+  top: -100px;
+  left: 1rem;
+  background: var(--e404-primary-dark);
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  z-index: 1000;
+  text-decoration: none;
+  transition: top 0.2s ease;
+}
+.e404-skip:focus {
+  top: 1rem;
+}
+
+/* Body Base */
+body.e404-body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background-color: var(--e404-bg);
+  color: var(--e404-text);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  overflow-x: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Main Container */
+.e404 {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  min-height: 100vh;
+  padding: 2.5rem 1.5rem;
+  box-sizing: border-box;
+  text-align: center;
+  overflow: hidden;
+  user-select: none;
+}
+
+/* Brand Logo */
+.e404-brand {
+  position: absolute;
+  top: 2rem;
+  left: 2.5rem;
+  display: inline-block;
+  transition: transform 0.25s ease, opacity 0.25s;
+  z-index: 20;
+}
+.e404-brand:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
+}
+.e404-brand img {
+  height: 38px;
+  width: auto;
+  object-fit: contain;
+}
+
+/* Ambient Floating Vegetables */
+.e404-decor {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.veg {
+  position: absolute;
+  top: var(--y);
+  left: var(--x);
+  width: var(--size);
+  height: var(--size);
+  opacity: 0.55;
+  transition: transform 0.15s cubic-bezier(0.2, 0, 0.2, 1);
+  will-change: transform;
+}
+
+.veg__float {
+  width: 100%;
+  height: 100%;
+  animation: vegFloat var(--dur, 8s) ease-in-out infinite alternate var(--delay, 0s);
+  transform: rotate(var(--spin, 0deg));
+}
+
+.veg svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 4px 10px rgba(60, 106, 0, 0.08));
+}
+
+@keyframes vegFloat {
+  0% {
+    transform: translateY(0px) rotate(var(--spin, 0deg)) scale(0.96);
+  }
+  50% {
+    transform: translateY(-16px) rotate(calc(var(--spin, 0deg) + 6deg)) scale(1.02);
+  }
+  100% {
+    transform: translateY(8px) rotate(calc(var(--spin, 0deg) - 6deg)) scale(0.98);
+  }
+}
+
+/* Center Scene */
+.e404-scene {
+  position: relative;
+  width: 100%;
+  max-width: 680px;
+  height: 340px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+  z-index: 10;
+}
+
+/* Circular Halo behind Character (like reference gif) */
+.e404-halo {
+  position: absolute;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #EAEFD9 0%, rgba(234, 239, 217, 0.6) 70%, transparent 100%);
+  z-index: 2;
+  pointer-events: none;
+  animation: haloPulse 4s ease-in-out infinite alternate;
+}
+
+@keyframes haloPulse {
+  0% { transform: scale(0.96); opacity: 0.8; }
+  100% { transform: scale(1.04); opacity: 1; }
+}
+
+/* Giant 404 Text Background */
+.e404-digits {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  pointer-events: auto;
+}
+
+.e404-digits__text {
+  font-size: clamp(8rem, 24vw, 15rem);
+  font-weight: 800;
+  line-height: 0.85;
+  letter-spacing: -0.05em;
+  color: var(--e404-digit-color);
+  text-shadow: 0 4px 20px rgba(60, 106, 0, 0.05);
+  cursor: text;
+  outline: none;
+  border-radius: 12px;
+  padding: 0 10px;
+  transition: color 0.2s, background-color 0.2s;
+}
+
+.e404-digits__text:focus {
+  background-color: rgba(255, 255, 255, 0.6);
+  color: #c9d6b4;
+}
+
+.e404-digits__hint {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--e404-text-light);
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+}
+
+.e404-digits:hover .e404-digits__hint {
+  opacity: 0.7;
+  transform: translateY(0);
+}
+
+/* Character Actor (Brokoli Detektif) */
+.e404-actor {
+  position: relative;
+  z-index: 5;
+  width: 240px;
+  height: 300px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.bd {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* -------------------------------------------------------------
+   CHARACTER ANIMATIONS (Walk Cycle matching reference GIF)
+   ------------------------------------------------------------- */
+
+/* Body Bobbing & Walking bounce */
+.bd-bob {
+  transform-origin: 160px 300px;
+  animation: bdWalkBob 0.8s infinite ease-in-out alternate;
+}
+
+@keyframes bdWalkBob {
+  0% {
+    transform: translateY(0px) rotate(-1.5deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(0deg);
+  }
+  100% {
+    transform: translateY(-2px) rotate(1.5deg);
+  }
+}
+
+/* Shadow pulsates with the step */
+.bd-shadow {
+  transform-origin: 160px 352px;
+  animation: bdShadowWalk 0.8s infinite ease-in-out alternate;
+}
+
+@keyframes bdShadowWalk {
+  0% {
+    transform: scaleX(0.92) scaleY(0.95);
+    opacity: 0.12;
+  }
+  100% {
+    transform: scaleX(1.06) scaleY(1.05);
+    opacity: 0.18;
+  }
+}
+
+/* Legs Walk Cycle (Swing back and forth like the reference GIF) */
+.bd-leg--front {
+  transform-origin: 172px 300px;
+  animation: bdLegFrontWalk 0.8s infinite ease-in-out;
+}
+
+@keyframes bdLegFrontWalk {
+  0% {
+    transform: rotate(18deg) translateY(-2px);
+  }
+  25% {
+    transform: rotate(0deg) translateY(-6px);
+  }
+  50% {
+    transform: rotate(-18deg) translateY(0px);
+  }
+  75% {
+    transform: rotate(-6deg) translateY(-1px);
+  }
+  100% {
+    transform: rotate(18deg) translateY(-2px);
+  }
+}
+
+.bd-leg--back {
+  transform-origin: 150px 300px;
+  animation: bdLegBackWalk 0.8s infinite ease-in-out;
+}
+
+@keyframes bdLegBackWalk {
+  0% {
+    transform: rotate(-18deg) translateY(0px);
+  }
+  25% {
+    transform: rotate(-6deg) translateY(-1px);
+  }
+  50% {
+    transform: rotate(18deg) translateY(-2px);
+  }
+  75% {
+    transform: rotate(0deg) translateY(-6px);
+  }
+  100% {
+    transform: rotate(-18deg) translateY(0px);
+  }
+}
+
+/* Detective Hat Tip/Bounce */
+.bd-hat {
+  transform-origin: 160px 130px;
+  animation: bdHatBob 0.8s infinite ease-in-out alternate;
+}
+
+@keyframes bdHatBob {
+  0% {
+    transform: rotate(-2deg);
+  }
+  100% {
+    transform: rotate(3deg);
+  }
+}
+
+/* Little flower on the hat wobbling */
+.bd-flower {
+  transform-origin: 104px 88px;
+  animation: bdFlowerWiggle 1.6s infinite ease-in-out;
+}
+
+@keyframes bdFlowerWiggle {
+  0%, 100% {
+    transform: rotate(-6deg) scale(1);
+  }
+  50% {
+    transform: rotate(8deg) scale(1.08);
+  }
+}
+
+/* Back Arm Sway */
+.bd-arm-back {
+  transform-origin: 96px 208px;
+  animation: bdArmBackSwing 0.8s infinite ease-in-out;
+}
+
+@keyframes bdArmBackSwing {
+  0% {
+    transform: rotate(-12deg);
+  }
+  50% {
+    transform: rotate(14deg);
+  }
+  100% {
+    transform: rotate(-12deg);
+  }
+}
+
+/* Front Arm & Magnifying Glass Holding Motion */
+.bd-arm-front {
+  transform-origin: 228px 212px;
+  animation: bdArmFrontSwing 0.8s infinite ease-in-out alternate;
+}
+
+@keyframes bdArmFrontSwing {
+  0% {
+    transform: rotate(-4deg) translateY(0);
+  }
+  100% {
+    transform: rotate(6deg) translateY(-4px);
+  }
+}
+
+/* Magnifying Glass Searching Motion */
+.bd-glass {
+  transform-origin: 288px 238px;
+  animation: bdGlassScan 1.6s infinite ease-in-out;
+  cursor: grab;
+  transition: transform 0.15s ease-out;
+}
+
+.bd-glass:active {
+  cursor: grabbing;
+}
+
+@keyframes bdGlassScan {
+  0% {
+    transform: rotate(-4deg) scale(1);
+  }
+  30% {
+    transform: rotate(10deg) scale(1.03);
+  }
+  70% {
+    transform: rotate(-8deg) scale(0.98);
+  }
+  100% {
+    transform: rotate(-4deg) scale(1);
+  }
+}
+
+/* Eyes Blinking Animation */
+.bd-eyes {
+  transform-origin: 160px 198px;
+  animation: bdBlink 4s infinite;
+}
+
+@keyframes bdBlink {
+  0%, 94%, 98%, 100% {
+    transform: scaleY(1);
+  }
+  96% {
+    transform: scaleY(0.1);
+  }
+}
+
+/* Eyebrows wiggle */
+.bd-brows {
+  animation: bdBrowsCurious 3s infinite ease-in-out;
+}
+
+@keyframes bdBrowsCurious {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+/* Interactive States: When Hovering or Active */
+.e404-actor:hover .bd-bob {
+  animation-duration: 0.4s; /* Excited rapid bob */
+}
+
+.e404-actor:hover .bd-glass {
+  animation: none;
+  transform: scale(1.1) rotate(5deg);
+}
+
+/* Copy & Headings */
+.e404-badge {
+  display: inline-block;
+  background-color: #E2ECD4;
+  color: var(--e404-primary-dark);
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.35rem 0.9rem;
+  border-radius: 9999px;
+  margin-bottom: 0.75rem;
+  box-shadow: 0 2px 6px rgba(60, 106, 0, 0.06);
+  z-index: 10;
+}
+
+.e404-title {
+  font-size: clamp(2rem, 4.5vw, 2.75rem);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+  color: var(--e404-text);
+  margin: 0 0 0.85rem 0;
+  z-index: 10;
+}
+
+.e404-text {
+  font-size: clamp(0.95rem, 2vw, 1.125rem);
+  line-height: 1.6;
+  color: var(--e404-text-muted);
+  max-width: 520px;
+  margin: 0 auto 2rem auto;
+  z-index: 10;
+}
+
+/* Action Buttons */
+.e404-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  z-index: 15;
+  margin-bottom: 2rem;
+}
+
+.e404-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 0.75rem;
+  text-decoration: none;
+  transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.e404-btn--primary {
+  background-color: var(--e404-primary);
+  color: #FFFFFF;
+  box-shadow: 0 4px 14px rgba(124, 179, 66, 0.35);
+  border: 2px solid transparent;
+}
+
+.e404-btn--primary:hover {
+  background-color: var(--e404-primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(60, 106, 0, 0.4);
+}
+
+.e404-btn--primary:active {
+  transform: scale(0.97);
+}
+
+.e404-btn--ghost {
+  background-color: transparent;
+  color: var(--e404-primary-dark);
+  border: 2px solid var(--e404-border);
+}
+
+.e404-btn--ghost:hover {
+  border-color: var(--e404-primary);
+  background-color: rgba(124, 179, 66, 0.08);
+  transform: translateY(-2px);
+}
+
+.e404-btn--ghost:active {
+  transform: scale(0.97);
+}
+
+/* Interactive Hint and Footer */
+.e404-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--e404-text-light);
+  margin-bottom: 2rem;
+  z-index: 10;
+  opacity: 0.85;
+}
+
+.e404-foot {
+  font-size: 0.8125rem;
+  color: var(--e404-text-light);
+  z-index: 10;
+  opacity: 0.7;
+}
+
+/* Click Particles (Bursting vegetable seeds/leaves) */
+.e404-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 30;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  pointer-events: none;
+  animation: particleBurst 0.9s cubic-bezier(0.12, 0.8, 0.32, 1) forwards;
+}
+
+@keyframes particleBurst {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.4) rotate(0deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1.1) rotate(var(--rot));
+  }
+}
+
+/* Reduced Motion for Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .bd-bob,
+  .bd-shadow,
+  .bd-leg--front,
+  .bd-leg--back,
+  .bd-hat,
+  .bd-flower,
+  .bd-arm-back,
+  .bd-arm-front,
+  .bd-glass,
+  .bd-eyes,
+  .bd-brows,
+  .veg__float,
+  .e404-halo {
+    animation: none !important;
+  }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 640px) {
+  .e404 {
+    padding: 2rem 1rem;
+  }
+  .e404-brand {
+    top: 1.25rem;
+    left: 1.25rem;
+  }
+  .e404-scene {
+    height: 280px;
+    margin-top: 2rem;
+  }
+  .e404-halo {
+    width: 200px;
+    height: 200px;
+  }
+  .e404-actor {
+    width: 190px;
+    height: 240px;
+  }
+  .e404-title {
+    font-size: 1.85rem;
+  }
+  .e404-text {
+    font-size: 0.95rem;
+    padding: 0 0.5rem;
+  }
+  .e404-actions {
+    flex-direction: column;
+    width: 100%;
+    max-width: 320px;
+  }
+  .e404-btn {
+    width: 100%;
+  }
+}

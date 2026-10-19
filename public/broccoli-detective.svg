@@ -1,0 +1,65 @@
+<svg width="200" height="240" viewBox="0 0 200 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g id="broccoli-detective">
+    <!-- Shadow -->
+    <ellipse cx="100" cy="225" rx="60" ry="10" fill="#424939" fill-opacity="0.2"/>
+    
+    <!-- Legs -->
+    <rect x="85" y="190" width="5" height="30" fill="#293f30" rx="2"/>
+    <rect x="110" y="190" width="5" height="30" fill="#293f30" rx="2"/>
+    
+    <!-- Body (Broccoli crown) -->
+    <path d="M50 190C35 190 30 160 40 140C30 120 45 80 60 60C50 50 60 20 80 20C90 0 110 0 120 20C140 20 150 50 140 60C155 80 170 120 160 140C170 160 165 190 150 190H50Z" fill="#3c6a00"/>
+    
+    <!-- Broccoli florets (texture) -->
+    <circle cx="70" cy="40" r="8" fill="#568a00"/>
+    <circle cx="90" cy="30" r="10" fill="#568a00"/>
+    <circle cx="110" cy="40" r="9" fill="#568a00"/>
+    <circle cx="80" cy="55" r="8" fill="#568a00"/>
+    <circle cx="100" cy="55" r="8" fill="#568a00"/>
+    <circle cx="75" cy="75" r="7" fill="#568a00"/>
+    <circle cx="105" cy="75" r="7" fill="#568a00"/>
+    <circle cx="65" cy="95" r="6" fill="#568a00"/>
+    <circle cx="115" cy="95" r="6" fill="#568a00"/>
+    <circle cx="80" cy="110" r="5" fill="#568a00"/>
+    <circle cx="100" cy="110" r="5" fill="#568a00"/>
+    <circle cx="90" cy="130" r="4" fill="#568a00"/>
+    
+    <!-- Stem -->
+    <rect x="88" y="140" width="24" height="50" fill="#293f30" rx="4"/>
+    
+    <!-- Detective hat -->
+    <ellipse cx="100" cy="20" rx="55" ry="15" fill="#191c1a"/>
+    <rect x="60" y="10" width="80" height="10" fill="#191c1a"/>
+    
+    <!-- Magnifying glass handle -->
+    <rect x="145" y="80" width="15" height="8" fill="#8f4e00" transform="rotate(30 145 80)"/>
+    <rect x="152" y="78" width="4" height="15" fill="#8f4e00" transform="rotate(30 152 78)"/>
+    
+    <!-- Magnifying glass lens -->
+    <ellipse cx="140" cy="75" rx="18" ry="18" fill="rgba(255,255,255,0.9)" stroke="#8f4e00" stroke-width="2"/>
+    <ellipse cx="140" cy="75" rx="18" ry="18" fill="url(#glint-gradient)" transform="rotate(-45 140 75)"/>
+    
+    <!-- Face -->
+    <circle cx="85" cy="90" r="6" fill="#191c1a"/>
+    <circle cx="115" cy="90" r="6" fill="#191c1a"/>
+    <path d="M90 105C90 105 95 115 100 105C105 115 110 105 110 105" stroke="#191c1a" stroke-width="2" stroke-linecap="round"/>
+    
+    <!-- Mustache -->
+    <path d="M95 102C95 102 90 110 85 105" stroke="#191c1a" stroke-width="2" stroke-linecap="round"/>
+    <path d="M105 102C105 102 110 110 115 105" stroke="#191c1a" stroke-width="2" stroke-linecap="round"/>
+    
+    <!-- Bow tie -->
+    <path d="M90 125L80 115L90 105H110L120 115L110 125H90Z" fill="#8f4e00"/>
+    
+    <!-- Magnifying glass highlight/glint -->
+    <ellipse cx="135" cy="68" rx="4" ry="2" fill="white" transform="rotate(-45 135 68)"/>
+    <ellipse cx="138" cy="65" rx="2" ry="1" fill="white" opacity="0.7" transform="rotate(-45 138 65)"/>
+  </g>
+  
+  <defs>
+    <radialGradient id="glint-gradient" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(140 75) rotate(45) scale(18)">
+      <stop offset="0" stop-color="white" stop-opacity="0.6"/>
+      <stop offset="1" stop-color="white" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+</svg>
