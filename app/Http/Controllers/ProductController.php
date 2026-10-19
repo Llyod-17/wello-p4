@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
@@ -11,8 +10,8 @@ class ProductController extends Controller
         $products = Product::all();
         return view('katalog', compact('products'));
     }
-    public function show(Request $id) {
-            $product = Product::findOrFail($id);
-            return view('detail', compact('product'));
+    public function show(string $id) {
+        $product = Product::findOrFail($id);
+        return view('detail', compact('product'));
     }
 }
