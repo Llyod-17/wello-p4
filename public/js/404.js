@@ -4,10 +4,10 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-  const container = document.querySelector('[data-404]');
+  const container = document.querySelector('[data-404], [data-error="broccoli"]');
   if (!container) return;
 
-  const actor = document.querySelector('.e404-actor');
+  const actor = document.querySelector('.error-actor, .e404-actor');
   const pupils = document.querySelectorAll('.bd-pupil');
   const glass = document.querySelector('[data-404-glass]');
   const digits = document.querySelector('[data-404-digits]');

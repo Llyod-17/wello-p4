@@ -434,11 +434,13 @@ body.e404-body {
 }
 
 /* Interactive States: When Hovering or Active */
-.e404-actor:hover .bd-bob {
+.e404-actor:hover .bd-bob,
+.error-actor:hover .bd-bob {
   animation-duration: 0.4s; /* Excited rapid bob */
 }
 
-.e404-actor:hover .bd-glass {
+.e404-actor:hover .bd-glass,
+.error-actor:hover .bd-glass {
   animation: none;
   transform: scale(1.1) rotate(5deg);
 }

@@ -1,0 +1,189 @@
+/* ============================================
+   5xx ERROR - BURNING APPLE
+   Panic shaking, fire flickering, smoke rising
+   ============================================ */
+
+/* Giant error code background */
+.error-digits-5xx {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: clamp(8rem, 24vw, 15rem);
+  font-weight: 800;
+  line-height: 0.85;
+  letter-spacing: -0.05em;
+  color: #FFE8D8;
+  text-shadow: 0 4px 20px rgba(200, 86, 47, 0.08);
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Burning Apple Character */
+.apple {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* Panic shake animation */
+.apple-shake {
+  transform-origin: 160px 320px;
+  animation: appleShake 0.6s infinite ease-in-out;
+}
+
+@keyframes appleShake {
+  0%, 100% {
+    transform: translateX(0) rotate(-3deg);
+  }
+  25% {
+    transform: translateX(-6px) rotate(4deg);
+  }
+  50% {
+    transform: translateX(0) rotate(-2deg);
+  }
+  75% {
+    transform: translateX(6px) rotate(3deg);
+  }
+}
+
+/* Shadow pulse with panic */
+.apple-shadow {
+  transform-origin: 160px 360px;
+  animation: appleShadowPanic 0.6s infinite ease-in-out;
+}
+
+@keyframes appleShadowPanic {
+  0%, 100% {
+    transform: scaleX(1) scaleY(0.9);
+    opacity: 0.15;
+  }
+  50% {
+    transform: scaleX(1.1) scaleY(1);
+    opacity: 0.2;
+  }
+}
+
+/* Fire flickering */
+.apple-fire {
+  animation: fireFlicker 0.3s infinite alternate;
+  transform-origin: center;
+}
+
+@keyframes fireFlicker {
+  0% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.08, 0.94) translateY(-4px);
+    opacity: 0.92;
+  }
+  100% {
+    transform: scale(0.96, 1.06) translateY(-2px);
+    opacity: 0.98;
+  }
+}
+
+/* Smoke rising */
+.apple-smoke {
+  animation: smokeRise 2.5s infinite ease-out;
+  transform-origin: center bottom;
+}
+
+@keyframes smokeRise {
+  0% {
+    transform: translateY(0) scale(0.7);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(-40px) scale(1.2);
+    opacity: 0.4;
+  }
+  100% {
+    transform: translateY(-80px) scale(1.5);
+    opacity: 0;
+  }
+}
+
+/* Eyes spinning dizzy */
+.apple-eyes {
+  animation: eyesSpin 1.2s infinite linear;
+  transform-origin: 160px 180px;
+}
+
+@keyframes eyesSpin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Bucket swinging */
+.apple-bucket {
+  transform-origin: 220px 260px;
+  animation: bucketSwing 0.6s infinite ease-in-out;
+}
+
+@keyframes bucketSwing {
+  0%, 100% {
+    transform: rotate(-15deg);
+  }
+  50% {
+    transform: rotate(15deg);
+  }
+}
+
+/* Interactive: Click to splash water */
+.error-actor[data-character="apple"]:active .apple-fire {
+  animation: fireDouse 0.8s ease-out forwards;
+}
+
+.error-actor[data-character="apple"]:active .apple-smoke {
+  animation: smokeExplosion 0.5s ease-out forwards;
+}
+
+@keyframes fireDouse {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.3;
+    transform: scale(0.7);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+}
+
+@keyframes smokeExplosion {
+  0% {
+    opacity: 0.7;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-60px) scale(2);
+  }
+}
+
+/* Halo becomes hot glow for burning apple */
+[data-error="apple"] .error-halo {
+  background: radial-gradient(circle, #FFE4D6 0%, rgba(255, 200, 150, 0.5) 60%, transparent 100%);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .apple-shake,
+  .apple-shadow,
+  .apple-fire,
+  .apple-smoke,
+  .apple-eyes,
+  .apple-bucket {
+    animation: none !important;
+  }
+}
