@@ -10,12 +10,17 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->string('customer_name');
-            $table->string('phone', 20);
-            $table->text('shipping_address');
-            $table->text('notes')->nullable();
-            $table->unsignedBigInteger('total_amount');
-            $table->string('status')->default('pending');
+            $table->string('invoice_code');        // Nomor Resi/Invoice (Contoh: INV-2026-001)
+            $table->integer('product_id');         // ID Barang yang dibeli
+            $table->string('product_name');        // Nama Barang saat dibeli
+            $table->string('customer_name');       // Nama Lengkap Pembeli
+            $table->string('customer_phone');      // Nomor HP/WA Pembeli
+            $table->text('customer_address');      // Alamat Pengiriman
+            $table->string('courier');             // Kurir (JNE / J&T / SiCepat)
+            $table->integer('quantity');           // Jumlah Beli
+            $table->integer('shipping_cost');      // Ongkos Kirim
+            $table->integer('total_amount');       // Total Bayar (Harga x Qty + Ongkir)
+            $table->string('status')->default('Pending'); // Status pesanan awal
             $table->timestamps();
         });
     }

@@ -8,17 +8,15 @@ Route::get("/", [ProductController::class, 'index']);
 
 Route::get('/detail/{id}', [ProductController::class, 'show']);
 
-Route::get('/checkout', function () {
-    return view('checkout');
-});
+Route::get('/checkout/{id}', [ProductController::class, 'checkout']);
+Route::post('/checkout/proses', [ProductController::class, 'storeTransaction']);
+Route::get('/berhasil/{id}', [ProductController::class, 'success']);
 
 Route::get('/test-500', function () {
     abort(500);
 });
 
-Route::get('/berhasil', function () {
-    return view('berhasil');
-});
+
 
 Route::get('/404', function () {
     return view('errors.404');
