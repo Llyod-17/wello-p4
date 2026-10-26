@@ -72,9 +72,23 @@
         <tr style="border-bottom: 1px solid #E2ECD4;">
           <td style="padding: 12px 0; color: var(--text-muted, #424939);">Status Pesanan</td>
           <td style="padding: 12px 0; text-align: right;">
-            <span style="display: inline-block; background-color: #FFF3CD; color: #856404; padding: 4px 12px; border-radius: 9999px; font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em;">
-              {{ $transaction->status }}
-            </span>
+            @if($transaction->status == 'Pending')
+              <span style="display: inline-block; background-color: #FFF3CD; color: #856404; padding: 5px 12px; border-radius: 9999px; font-weight: 700; font-size: 12px; letter-spacing: 0.02em; border: 1px solid #FFEEBA;">
+                ⏳ Pending (Menunggu Konfirmasi Admin)
+              </span>
+            @elseif($transaction->status == 'Paid')
+              <span style="display: inline-block; background-color: #CFE2FF; color: #084298; padding: 5px 12px; border-radius: 9999px; font-weight: 700; font-size: 12px; letter-spacing: 0.02em; border: 1px solid #B6D4FE;">
+                💳 Paid (Pembayaran Lunas - Sedang Dikemas)
+              </span>
+            @elseif($transaction->status == 'Shipped')
+              <span style="display: inline-block; background-color: #D1E7DD; color: #0F5132; padding: 5px 12px; border-radius: 9999px; font-weight: 700; font-size: 12px; letter-spacing: 0.02em; border: 1px solid #BADBCC;">
+                🚚 Shipped (Pesanan Sedang Dikirim Kurir)
+              </span>
+            @else
+              <span style="display: inline-block; background-color: #E2E3E5; color: #383D41; padding: 5px 12px; border-radius: 9999px; font-weight: 700; font-size: 12px;">
+                {{ $transaction->status }}
+              </span>
+            @endif
           </td>
         </tr>
 

@@ -9,7 +9,7 @@
   <link rel="icon" href="{{ asset('wello-logo.png') }}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
   {{-- Sticky footer: footer selalu di bawah walau konten pendek --}}
@@ -30,6 +30,7 @@
       </a>
       <div class="nav-links">
         <a href="/">Katalog</a>
+        <a href="/admin/transactions" style="color: var(--accent, #FB8C00); font-weight: 700;">⚙️ Panel Admin</a>
       </div>
     </div>
   </nav>
