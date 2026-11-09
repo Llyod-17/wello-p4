@@ -59,4 +59,94 @@ class ProductController extends Controller
         $transaction = Transaction::findOrFail($id);
         return view('berhasil', compact('transaction'));
     }
+
+    // ==========================================
+    // TAMBAHAN FITUR ADMIN (CRUD & LKPPD P10)
+    // ==========================================
+
+    // Menampilkan halaman tambah produk
+    public function create() {
+        return view('admin.create_product');
+    }
+
+    // Menyimpan produk baru
+    public function store(Request $request) {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'price' => 'required|numeric',
+            'description' => 'required|string',
+            'image' => 'required|image|mimes:jpeg,png,jpg,webp|max:2048',
+        ]);
+
+        $filename = null;
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('assets/images'), $filename);
+        }
+
+        Product::create([
+            'name' => $request->name,
+            'price' => $request->price,
+            'description' => $request->description,
+            'image' => $filename,
+        ]);
+
+        return redirect('/admin/products')->with('success', 'Produk berhasil ditambahkan!');
+    }
+
+    // Menampilkan halaman form edit dengan pre-filled data
+    public function edit($id) {
+        $product = Product::findOrFail($id);
+        return view('admin.edit_product', compact('product'));
+    }
+
+    // Memperbarui produk (Conditional Upload & Unlink Foto Lama)
+    public function updateProduct(Request $request, $id) {
+        $product = Product::findOrFail($id);
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'price' => 'required|numeric',
+            'description' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+        ]);
+
+        $product->name = $request->name;
+        $product->price = $request->price;
+        $product->description = $request->description;
+
+        // Cek apakah admin mengunggah foto baru
+        if ($request->hasFile('image')) {
+            // Hapus file foto lama di folder jika ada (Unlink)
+            if ($product->image && file_exists(public_path('assets/images/' . $product->image))) {
+                unlink(public_path('assets/images/' . $product->image));
+            }
+
+            // Upload foto baru
+            $file = $request->file('image');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('assets/images'), $filename);
+            
+            $product->image = $filename;
+        }
+
+        $product->save();
+
+        return redirect('/admin/products')->with('success', 'Produk berhasil diperbarui!');
+    }
+
+    // Menghapus produk beserta file fisik fotonya di server
+    public function deleteProduct($id) {
+        $product = Product::findOrFail($id);
+
+        // Hapus file foto dari folder public/assets/images/ (Unlink)
+        if ($product->image && file_exists(public_path('assets/images/' . $product->image))) {
+            unlink(public_path('assets/images/' . $product->image));
+        }
+
+        $product->delete();
+
+        return redirect('/admin/products')->with('success', 'Produk berhasil dihapus!');
+    }
 }
