@@ -25,6 +25,10 @@ Route::get('/admin/products', [AdminController::class, 'products']);
 Route::get('/admin/products/create', [AdminController::class, 'createProduct']);
 Route::post('/admin/products/store', [AdminController::class, 'storeProduct']);
 
+Route::get('/admin/products/{id}/edit', [ProductController::class, 'edit']);
+Route::post('/admin/products/update/{id}', [ProductController::class, 'updateProduct']);
+Route::post('/admin/products/delete/{id}', [ProductController::class, 'deleteProduct']);
+
 Route::get('/test-500', function () {
     abort(500);
 });

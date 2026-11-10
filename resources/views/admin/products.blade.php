@@ -86,12 +86,29 @@
 
                             <!-- Action Link -->
                             <td style="padding: 16px 20px; vertical-align: middle; text-align: right;">
-                                <a href="/detail/{{ $product->id }}" target="_blank"
-                                   style="display: inline-flex; align-items: center; gap: 4px; color: #0B5ED7; text-decoration: none; font-weight: 700; font-size: 12.5px; background-color: #EFF6FF; padding: 8px 14px; border-radius: 8px; border: 1px solid #BFDBFE; transition: all 0.15s;"
-                                   onmouseover="this.style.backgroundColor='#DBEAFE'" onmouseout="this.style.backgroundColor='#EFF6FF'">
-                                    <span>Pratinjau</span>
-                                    <i data-lucide="external-link" style="width: 12px; height: 12px;"></i>
-                                </a>
+                                <div style="display: inline-flex; align-items: center; gap: 8px;">
+                                    <a href="/admin/products/{{ $product->id }}/edit"
+                                       style="display: inline-flex; align-items: center; gap: 4px; color: #92400E; text-decoration: none; font-weight: 700; font-size: 12.5px; background-color: #FEF3C7; padding: 8px 14px; border-radius: 8px; border: 1px solid #FDE68A; transition: all 0.15s;"
+                                       onmouseover="this.style.backgroundColor='#FDE68A'" onmouseout="this.style.backgroundColor='#FEF3C7'">
+                                        <i data-lucide="pencil" style="width: 12px; height: 12px;"></i>
+                                        <span>Edit</span>
+                                    </a>
+                                    <a href="/detail/{{ $product->id }}" target="_blank"
+                                       style="display: inline-flex; align-items: center; gap: 4px; color: #0B5ED7; text-decoration: none; font-weight: 700; font-size: 12.5px; background-color: #EFF6FF; padding: 8px 14px; border-radius: 8px; border: 1px solid #BFDBFE; transition: all 0.15s;"
+                                       onmouseover="this.style.backgroundColor='#DBEAFE'" onmouseout="this.style.backgroundColor='#EFF6FF'">
+                                        <span>Pratinjau</span>
+                                        <i data-lucide="external-link" style="width: 12px; height: 12px;"></i>
+                                    </a>
+                                    <form action="/admin/products/delete/{{ $product->id }}" method="POST"
+                                          onsubmit="return confirm('Yakin ingin menghapus produk ini?')">
+                                        @csrf
+                                        <button type="submit" aria-label="Hapus {{ $product->name }}" title="Hapus produk"
+                                                style="display: inline-flex; align-items: center; justify-content: center; color: #B91C1C; background-color: #FEF2F2; padding: 8px; border-radius: 8px; border: 1px solid #FECACA; cursor: pointer; transition: all 0.15s;"
+                                                onmouseover="this.style.backgroundColor='#FEE2E2'" onmouseout="this.style.backgroundColor='#FEF2F2'">
+                                            <i data-lucide="trash-2" style="width: 16px; height: 16px;"></i>
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
 
                         </tr>
