@@ -8,8 +8,28 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function index() {
-        $products = Product::all();
+    public function index(Request $request) {
+        $query = Product::query();
+
+        // 1. Fitur Pencarian (LIKE) - Mencari di Nama dan Deskripsi
+        if ($request->filled('search')) {
+            $search = $request->query('search');
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'LIKE', "%{$search}%")
+                  ->orWhere('description', 'LIKE', "%{$search}%");
+            });
+        }
+
+        // 2. Fitur Pengurutan (orderBy)
+        if ($request->query('sort') === 'termurah') {
+            $query->orderBy('price', 'asc');
+        } elseif ($request->query('sort') === 'termahal') {
+            $query->orderBy('price', 'desc');
+        } else {
+            $query->latest(); // Default: Produk terbaru
+        }
+
+        $products = $query->get();
         return view('katalog', compact('products'));
     }
 
