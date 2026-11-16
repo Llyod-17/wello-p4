@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
@@ -13,21 +14,28 @@ Route::get('/checkout/{id}', [ProductController::class, 'checkout']);
 Route::post('/checkout/proses', [ProductController::class, 'storeTransaction']);
 Route::get('/berhasil/{id}', [ProductController::class, 'success']);
 
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'authenticate']);
+Route::post('/logout', [AuthController::class, 'logout']);
+
 // =========================================================
 // JALUR BACK-OFFICE / SELLER CENTER (SISI ADMIN: P8 & P9)
 // =========================================================
 // Materi P8: Manajemen Pesanan Masuk
-Route::get('/admin/transactions', [AdminController::class, 'transactions']);
-Route::post('/admin/transactions/{id}/status', [AdminController::class, 'updateStatus']);
+Route::middleware(['auth'])->group(function(){
+    Route::get('/admin/transactions', [AdminController::class, 'transactions']);
+    Route::post('/admin/transactions/{id}/status', [AdminController::class, 'updateStatus']);
 
-// Materi P9: Manajemen Katalog Produk & Upload Gambar
-Route::get('/admin/products', [AdminController::class, 'products']);
-Route::get('/admin/products/create', [AdminController::class, 'createProduct']);
-Route::post('/admin/products/store', [AdminController::class, 'storeProduct']);
+    // Materi P9: Manajemen Katalog Produk & Upload Gambar
+    Route::get('/admin/products', [AdminController::class, 'products']);
+    Route::get('/admin/products/create', [AdminController::class, 'createProduct']);
+    Route::post('/admin/products/store', [AdminController::class, 'storeProduct']);
 
-Route::get('/admin/products/{id}/edit', [ProductController::class, 'edit']);
-Route::post('/admin/products/update/{id}', [ProductController::class, 'updateProduct']);
-Route::post('/admin/products/delete/{id}', [ProductController::class, 'deleteProduct']);
+    Route::get('/admin/products/{id}/edit', [ProductController::class, 'edit']);
+    Route::post('/admin/products/update/{id}', [ProductController::class, 'updateProduct']);
+    Route::post('/admin/products/delete/{id}', [ProductController::class, 'deleteProduct']);
+});
+
 
 Route::get('/test-500', function () {
     abort(500);
