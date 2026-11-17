@@ -137,6 +137,32 @@
             color: #FFFFFF;
         }
 
+        .admin-user-name {
+            color: var(--text-main);
+            font-size: 13.5px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .admin-logout-button {
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            padding: 8px 14px;
+            background: #FFFFFF;
+            color: var(--text-muted);
+            font: inherit;
+            font-size: 13.5px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .admin-logout-button:hover {
+            border-color: #D9897E;
+            background: #FFF4F2;
+            color: #9B3025;
+        }
+
         .admin-content {
             flex: 1;
             max-width: 1280px;
@@ -199,6 +225,11 @@
                 <span>Lihat Toko</span>
                 <i data-lucide="external-link" style="width: 14px; height: 14px;"></i>
             </a>
+            <span class="admin-user-name">{{ Auth::user()->name }}</span>
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" class="admin-logout-button">Logout</button>
+            </form>
         </nav>
     </header>
 

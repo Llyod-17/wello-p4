@@ -48,7 +48,13 @@
 
       <div class="nav-links">
         <a href="/" class="{{ Request::is('/') ? 'active' : '' }}">Katalog</a>
-        <a href="/admin/transactions" class="admin-link">Panel Admin</a>
+        @can('access-admin')
+          <a href="/admin/transactions" class="admin-link">Panel Admin</a>
+        @endcan
+        <form method="POST" action="{{ route('logout') }}" class="nav-logout-form">
+          @csrf
+          <button type="submit" class="nav-logout">Logout</button>
+        </form>
       </div>
     </div>
   </nav>

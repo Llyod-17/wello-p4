@@ -22,10 +22,13 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
-        User::updateOrCreate([
-            "name" => "Admin Official Store",
-            "email" => "admin@toko.com",
-            "password" => Hash::make('admin123')
-        ]);
+        User::updateOrCreate(
+            ['email' => 'admin@toko.com'],
+            [
+                'name' => 'Admin Official Store',
+                'password' => Hash::make('admin123'),
+                'role' => 'admin',
+            ],
+        );
     }
 }
