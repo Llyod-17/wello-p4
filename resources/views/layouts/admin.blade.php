@@ -14,6 +14,8 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <!-- Alpine.js -->
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
         :root {
@@ -200,6 +202,10 @@
             <a href="/admin/products/create" class="admin-link {{ request()->is('admin/products/create') ? 'active' : '' }}">
                 <i data-lucide="plus-circle" style="width: 16px; height: 16px;"></i>
                 Tambah Produk
+            </a>
+            <a href="/admin/vouchers" class="admin-link {{ request()->is('admin/vouchers*') ? 'active' : '' }}">
+                <i data-lucide="ticket-percent" style="width: 16px; height: 16px;"></i>
+                Voucher Diskon
             </a>
             <a href="/" target="_blank" class="admin-link-store">
                 <span>Lihat Toko</span>

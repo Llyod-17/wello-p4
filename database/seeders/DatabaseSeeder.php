@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Product;
 use App\Models\Transaction;
 use App\Models\User;
+use App\Models\Voucher;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -219,5 +220,38 @@ class DatabaseSeeder extends Seeder
                 ]
             );
         }
+
+        // 6. Inovasi Fitur 1: Seeder Contoh Voucher Diskon
+        Voucher::updateOrCreate(
+            ['code' => 'WELLOHEMAT'],
+            [
+                'name' => 'Promo Wello Diskon 15%',
+                'type' => 'percentage',
+                'reward_amount' => 15, // 15%
+                'max_discount' => 30000, // maks 30rb
+                'min_purchase' => 30000,
+                'quota' => 50,
+                'used_count' => 0,
+                'start_date' => now()->subDay(),
+                'end_date' => now()->addMonths(2),
+                'is_active' => true,
+            ]
+        );
+
+        Voucher::updateOrCreate(
+            ['code' => 'SEGAR10K'],
+            [
+                'name' => 'Kupon Potongan Langsung Rp 10.000',
+                'type' => 'fixed',
+                'reward_amount' => 10000, // Rp 10.000
+                'max_discount' => null,
+                'min_purchase' => 25000,
+                'quota' => 100,
+                'used_count' => 0,
+                'start_date' => now()->subDay(),
+                'end_date' => now()->addMonths(1),
+                'is_active' => true,
+            ]
+        );
     }
 }

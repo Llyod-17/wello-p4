@@ -47,8 +47,29 @@
         </form>
       </div>
 
-      <div class="nav-links">
+      <div class="nav-links" style="display: flex; align-items: center; gap: 16px;">
         @auth
+          <!-- INOVASI FITUR 2: Icon Keranjang Belanja & Badge Counter -->
+          @php
+            $navCartCount = Auth::user()->cartCount();
+          @endphp
+          <a href="{{ route('cart.index') }}" 
+             style="position: relative; display: inline-flex; align-items: center; justify-content: center; width: 42px; height: 42px; background: #FFFFFF; border: 1px solid var(--border, #C2C9B5); border-radius: 10px; color: var(--text, #191C1A); text-decoration: none; transition: all 0.2s ease;"
+             onmouseover="this.style.borderColor='var(--primary, #7CB342)'; this.style.color='var(--primary-dark, #3C6A00)';"
+             onmouseout="this.style.borderColor='var(--border, #C2C9B5)'; this.style.color='var(--text, #191C1A)';"
+             title="Keranjang Belanja">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="9" cy="21" r="1"></circle>
+              <circle cx="20" cy="21" r="1"></circle>
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg>
+            @if($navCartCount > 0)
+              <span style="position: absolute; top: -6px; right: -6px; background-color: #BA1A1A; color: #FFFFFF; font-size: 11px; font-weight: 800; min-width: 18px; height: 18px; padding: 0 4px; border-radius: 9999px; display: flex; align-items: center; justify-content: center; border: 2px solid #FFFFFF;">
+                {{ $navCartCount > 99 ? '99+' : $navCartCount }}
+              </span>
+            @endif
+          </a>
+
           <div class="nav-user-dropdown" x-data="{ open: false }" @click.away="open = false">
             <div class="nav-user-chip" @click="open = !open" style="cursor: pointer;">
               <span class="user-avatar-initial">{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</span>
@@ -58,6 +79,7 @@
               @if(Auth::user()->role === 'admin')
                 <a href="/admin/transactions" class="dropdown-item">Seller Center</a>
               @endif
+              <a href="{{ route('cart.index') }}" class="dropdown-item">Keranjang ({{ $navCartCount }})</a>
               <a href="{{ route('my-orders') }}" class="dropdown-item">Pesanan Saya</a>
               <form method="POST" action="{{ route('logout') }}" class="nav-logout-form">
                 @csrf

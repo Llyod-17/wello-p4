@@ -51,9 +51,20 @@
         </tr>
 
         <tr style="border-bottom: 1px solid #F2F4EF;">
-          <td style="padding: 12px 0; color: var(--text-muted, #424939);">Produk yang Dipesan</td>
+          <td style="padding: 12px 0; color: var(--text-muted, #424939); vertical-align: top;">Produk yang Dipesan</td>
           <td style="padding: 12px 0; text-align: right; font-weight: 700; color: var(--text, #191C1A);">
-            {{ $transaction->product_name }} <span style="color: var(--primary-dark, #3C6A00);">({{ $transaction->quantity }}x)</span>
+            @if($transaction->items->isNotEmpty())
+              <div style="display: flex; flex-direction: column; gap: 6px;">
+                @foreach($transaction->items as $it)
+                  <div style="font-size: 13.5px;">
+                    {{ $it->product_name }} <span style="color: var(--primary-dark, #3C6A00); font-weight: 800;">({{ $it->quantity }}x)</span>
+                    <span style="color: var(--text-muted, #424939); font-weight: 400; font-size: 12px;">- Rp {{ number_format($it->subtotal, 0, ',', '.') }}</span>
+                  </div>
+                @endforeach
+              </div>
+            @else
+              {{ $transaction->product_name }} <span style="color: var(--primary-dark, #3C6A00);">({{ $transaction->quantity }}x)</span>
+            @endif
           </td>
         </tr>
 
@@ -77,6 +88,17 @@
             {{ $transaction->courier }} <span style="color: var(--text-muted, #424939);">(Rp {{ number_format($transaction->shipping_cost, 0, ',', '.') }})</span>
           </td>
         </tr>
+
+        @if($transaction->discount_amount > 0)
+        <tr style="border-bottom: 1px solid #F2F4EF; background-color: #F4F8EB;">
+          <td style="padding: 12px 10px; color: #3C6A00; font-weight: 700;">
+            🎟️ Diskon Kupon ({{ $transaction->voucher_code }})
+          </td>
+          <td style="padding: 12px 10px; text-align: right; font-weight: 700; color: #3C6A00;">
+            - Rp {{ number_format($transaction->discount_amount, 0, ',', '.') }}
+          </td>
+        </tr>
+        @endif
 
         <tr style="border-bottom: 1px solid #E2ECD4;">
           <td style="padding: 12px 0; color: var(--text-muted, #424939);">Status Pesanan</td>

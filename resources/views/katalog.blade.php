@@ -3,6 +3,19 @@
 @section('judul', 'Katalog Produk - Wello Vitality Grocer')
 
 @section('konten_utama')
+  @if(session('success'))
+    <div style="background-color: #EAEFD9; color: var(--primary-dark, #3C6A00); padding: 14px 18px; border-radius: 10px; border: 1px solid #C2C9B5; margin-bottom: 20px; font-weight: 700; display: flex; align-items: center; justify-content: space-between;">
+      <span>✓ {{ session('success') }}</span>
+      <a href="{{ route('cart.index') }}" style="color: var(--primary-dark, #3C6A00); font-size: 13px; text-decoration: underline;">Lihat Keranjang →</a>
+    </div>
+  @endif
+
+  @if(session('error'))
+    <div style="background-color: #FFF4F2; color: #BA1A1A; padding: 14px 18px; border-radius: 10px; border: 1px solid #FFDAD6; margin-bottom: 20px; font-weight: 700;">
+      <span>✕ {{ session('error') }}</span>
+    </div>
+  @endif
+
   {{-- Store Banner (Brand Customization - P11) --}}
   <div class="store-banner">
     <div>
@@ -81,9 +94,27 @@
         <h3 class="card-title">{{ $p->name }}</h3>
         <p class="card-price">Rp {{ number_format($p->price, 0, ',', '.') }}</p>
         @if($p->stock > 0)
-          <a href="/detail/{{ $p->id }}" class="btn btn-primary btn-block">Lihat Detail</a>
+          <div style="display: flex; gap: 8px; margin-top: 10px;">
+            <a href="/detail/{{ $p->id }}" class="btn btn-primary" style="flex: 1; text-align: center; text-decoration: none; padding: 10px 12px; font-size: 13.5px;">
+              Lihat Detail
+            </a>
+            @auth
+              <form action="{{ route('cart.add') }}" method="POST" style="margin: 0;">
+                @csrf
+                <input type="hidden" name="product_id" value="{{ $p->id }}">
+                <input type="hidden" name="quantity" value="1">
+                <button type="submit" 
+                        style="width: 40px; height: 100%; min-height: 40px; border: 1.5px solid var(--primary, #7CB342); background: #FFFFFF; color: var(--primary-dark, #3C6A00); border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: all 0.2s ease;"
+                        onmouseover="this.style.background='#EAEFD9';"
+                        onmouseout="this.style.background='#FFFFFF';"
+                        title="Tambah 1 ke Keranjang">
+                  🛒
+                </button>
+              </form>
+            @endauth
+          </div>
         @else
-          <button type="button" class="btn btn-block" disabled style="background: #E0E3DB; color: #8C9382; cursor: not-allowed; border: none;">Stok Habis</button>
+          <button type="button" class="btn btn-block" disabled style="background: #E0E3DB; color: #8C9382; cursor: not-allowed; border: none; margin-top: 10px;">Stok Habis</button>
         @endif
       </div>
     </div>

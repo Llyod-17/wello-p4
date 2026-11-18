@@ -83,6 +83,79 @@
 
     </div>
 
+    <!-- SECTION GRAFIK & DIAGRAM ANALITIK (INOVASI FITUR 3) -->
+    <div style="margin-bottom: 32px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px;">
+            <div>
+                <h2 style="font-size: 20px; font-weight: 800; color: var(--text-main); margin: 0 0 4px 0; display: flex; align-items: center; gap: 8px;">
+                    <i data-lucide="line-chart" style="width: 22px; height: 22px; color: var(--primary);"></i>
+                    Visualisasi &amp; Analitik Penjualan
+                </h2>
+                <p style="margin: 0; font-size: 13.5px; color: var(--text-muted);">
+                    Pantau tren omzet 7 hari terakhir, produk paling diminati, dan distribusi kurir secara real-time.
+                </p>
+            </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 20px;">
+            <!-- Grafik 1: Tren Omzet 7 Hari -->
+            <div style="background: var(--surface); border-radius: 16px; border: 1px solid var(--border-subtle); padding: 22px; box-shadow: var(--shadow-subtle);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                    <h3 style="font-size: 15px; font-weight: 700; color: var(--text-main); margin: 0; display: flex; align-items: center; gap: 8px;">
+                        <i data-lucide="trending-up" style="width: 17px; height: 17px; color: var(--primary);"></i>
+                        Tren Omzet 7 Hari Terakhir
+                    </h3>
+                    <span style="font-size: 11px; font-weight: 700; color: var(--primary); background: var(--primary-light); padding: 4px 8px; border-radius: 6px;">Harian (Rp)</span>
+                </div>
+                <div style="position: relative; height: 240px; width: 100%;">
+                    <canvas id="chartDailyRevenue"></canvas>
+                </div>
+            </div>
+
+            <!-- Grafik 2: Top 5 Produk Terlaris -->
+            <div style="background: var(--surface); border-radius: 16px; border: 1px solid var(--border-subtle); padding: 22px; box-shadow: var(--shadow-subtle);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                    <h3 style="font-size: 15px; font-weight: 700; color: var(--text-main); margin: 0; display: flex; align-items: center; gap: 8px;">
+                        <i data-lucide="award" style="width: 17px; height: 17px; color: #FF8F06;"></i>
+                        Top 5 Produk Terlaris
+                    </h3>
+                    <span style="font-size: 11px; font-weight: 700; color: #856404; background: #FFF3CD; padding: 4px 8px; border-radius: 6px;">Qty Terjual</span>
+                </div>
+                <div style="position: relative; height: 240px; width: 100%;">
+                    <canvas id="chartTopProducts"></canvas>
+                </div>
+            </div>
+
+            <!-- Grafik 3: Distribusi Status Pesanan -->
+            <div style="background: var(--surface); border-radius: 16px; border: 1px solid var(--border-subtle); padding: 22px; box-shadow: var(--shadow-subtle);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                    <h3 style="font-size: 15px; font-weight: 700; color: var(--text-main); margin: 0; display: flex; align-items: center; gap: 8px;">
+                        <i data-lucide="pie-chart" style="width: 17px; height: 17px; color: #084298;"></i>
+                        Distribusi Status Pesanan
+                    </h3>
+                    <span style="font-size: 11px; font-weight: 700; color: #084298; background: #CFE2FF; padding: 4px 8px; border-radius: 6px;">Status</span>
+                </div>
+                <div style="position: relative; height: 240px; width: 100%;">
+                    <canvas id="chartStatus"></canvas>
+                </div>
+            </div>
+
+            <!-- Grafik 4: Preferensi Kurir Pengiriman -->
+            <div style="background: var(--surface); border-radius: 16px; border: 1px solid var(--border-subtle); padding: 22px; box-shadow: var(--shadow-subtle);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                    <h3 style="font-size: 15px; font-weight: 700; color: var(--text-main); margin: 0; display: flex; align-items: center; gap: 8px;">
+                        <i data-lucide="truck" style="width: 17px; height: 17px; color: #0F5132;"></i>
+                        Preferensi Jasa Ekspedisi
+                    </h3>
+                    <span style="font-size: 11px; font-weight: 700; color: #0F5132; background: #D1E7DD; padding: 4px 8px; border-radius: 6px;">Total Order</span>
+                </div>
+                <div style="position: relative; height: 240px; width: 100%;">
+                    <canvas id="chartCourier"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- MAIN TRANSACTIONS TABLE CARD -->
     <div style="background: var(--surface); border-radius: 16px; border: 1px solid var(--border-subtle); box-shadow: var(--shadow-card); padding: 28px;">
         
@@ -180,8 +253,15 @@
                             </td>
 
                             <!-- Total Amount -->
-                            <td style="padding: 16px; vertical-align: top; font-weight: 800; color: #BA1A1A; font-size: 15px; white-space: nowrap;">
-                                Rp {{ number_format($item->total_amount, 0, ',', '.') }}
+                            <td style="padding: 16px; vertical-align: top; white-space: nowrap;">
+                                <div style="font-weight: 800; color: #BA1A1A; font-size: 15px;">
+                                    Rp {{ number_format($item->total_amount, 0, ',', '.') }}
+                                </div>
+                                @if($item->discount_amount > 0)
+                                    <div style="font-size: 11px; font-weight: 700; color: #0F5132; background: #D1E7DD; padding: 2px 6px; border-radius: 4px; display: inline-block; margin-top: 4px;">
+                                        🎟️ {{ $item->voucher_code }}: -Rp {{ number_format($item->discount_amount, 0, ',', '.') }}
+                                    </div>
+                                @endif
                             </td>
 
                             <!-- Status Badge -->
@@ -271,5 +351,174 @@
         </div>
 
     </div>
+
+    <!-- SCRIPT INITIALIZE CHART.JS UNTUK ADMIN -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Palette warna Wello Vitality Grocer
+            const welloGreen = '#3C6A00';
+            const welloGreenLight = 'rgba(60, 106, 0, 0.15)';
+            const welloAccent = '#FF8F06';
+            const welloBlue = '#0B5ED7';
+            const welloYellow = '#F59E0B';
+            const welloRed = '#DC2626';
+
+            // 1. Chart Omzet Harian (Line)
+            const ctxDaily = document.getElementById('chartDailyRevenue')?.getContext('2d');
+            if (ctxDaily) {
+                new Chart(ctxDaily, {
+                    type: 'line',
+                    data: {
+                        labels: @json($chartDailyLabels),
+                        datasets: [{
+                            label: 'Omzet (Rp)',
+                            data: @json($chartDailyValues),
+                            borderColor: welloGreen,
+                            backgroundColor: welloGreenLight,
+                            fill: true,
+                            tension: 0.35,
+                            borderWidth: 2.5,
+                            pointRadius: 4,
+                            pointBackgroundColor: welloGreen,
+                            pointHoverRadius: 6
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return 'Rp ' + context.parsed.y.toLocaleString('id-ID');
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function(value) {
+                                        if (value >= 1000000) return 'Rp ' + (value/1000000).toFixed(1) + 'M';
+                                        if (value >= 1000) return 'Rp ' + (value/1000).toFixed(0) + 'k';
+                                        return 'Rp ' + value;
+                                    },
+                                    font: { size: 11 }
+                                },
+                                grid: { color: 'rgba(0,0,0,0.05)' }
+                            },
+                            x: {
+                                grid: { display: false },
+                                ticks: { font: { size: 11 } }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // 2. Chart Top Produk (Horizontal Bar)
+            const ctxTop = document.getElementById('chartTopProducts')?.getContext('2d');
+            if (ctxTop) {
+                const labels = @json($chartTopProductLabels);
+                const values = @json($chartTopProductValues);
+                new Chart(ctxTop, {
+                    type: 'bar',
+                    data: {
+                        labels: labels.length ? labels : ['Belum ada data'],
+                        datasets: [{
+                            label: 'Unit Terjual',
+                            data: values.length ? values : [0],
+                            backgroundColor: ['#7CB342', '#FF8F06', '#29B6F6', '#AB47BC', '#26A69A'],
+                            borderRadius: 6
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false }
+                        },
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                ticks: { precision: 0, font: { size: 11 } },
+                                grid: { color: 'rgba(0,0,0,0.05)' }
+                            },
+                            y: {
+                                grid: { display: false },
+                                ticks: { font: { size: 11, weight: '600' } }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // 3. Chart Status Order (Doughnut)
+            const ctxStatus = document.getElementById('chartStatus')?.getContext('2d');
+            if (ctxStatus) {
+                new Chart(ctxStatus, {
+                    type: 'doughnut',
+                    data: {
+                        labels: @json($chartStatusLabels),
+                        datasets: [{
+                            data: @json($chartStatusValues),
+                            backgroundColor: [welloYellow, welloBlue, welloGreen, welloRed],
+                            borderWidth: 2,
+                            borderColor: '#ffffff'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: { boxWidth: 12, font: { size: 11, weight: '600' }, padding: 12 }
+                            }
+                        },
+                        cutout: '65%'
+                    }
+                });
+            }
+
+            // 4. Chart Kurir (Bar)
+            const ctxCourier = document.getElementById('chartCourier')?.getContext('2d');
+            if (ctxCourier) {
+                const cLabels = @json($chartCourierLabels);
+                const cValues = @json($chartCourierValues);
+                new Chart(ctxCourier, {
+                    type: 'bar',
+                    data: {
+                        labels: cLabels.length ? cLabels : ['Belum ada data'],
+                        datasets: [{
+                            label: 'Jumlah Pesanan',
+                            data: cValues.length ? cValues : [0],
+                            backgroundColor: '#3C6A00',
+                            borderRadius: 6
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: { precision: 0, font: { size: 11 } },
+                                grid: { color: 'rgba(0,0,0,0.05)' }
+                            },
+                            x: {
+                                grid: { display: false },
+                                ticks: { font: { size: 11, weight: '600' } }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
 
 @endsection

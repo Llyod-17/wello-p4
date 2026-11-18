@@ -2,15 +2,18 @@
 
 namespace Tests\Feature;
 
-// use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 
 class ExampleTest extends TestCase
 {
-    public function test_guest_is_redirected_to_login_from_the_catalog(): void
+    use DatabaseMigrations;
+
+    public function test_catalog_is_accessible_by_guest(): void
     {
         $response = $this->get('/');
 
-        $response->assertRedirect(route('login'));
+        $response->assertOk();
+        $response->assertSee('Wello Vitality Grocer');
     }
 }

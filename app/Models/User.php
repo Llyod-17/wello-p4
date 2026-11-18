@@ -27,6 +27,16 @@ class User extends Authenticatable
         return $this->hasMany(Transaction::class);
     }
 
+    public function carts()
+    {
+        return $this->hasMany(Cart::class);
+    }
+
+    public function cartCount(): int
+    {
+        return $this->carts()->sum('quantity');
+    }
+
     /**
      * Get the attributes that should be cast.
      *

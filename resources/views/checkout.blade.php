@@ -94,6 +94,27 @@
           </div>
         </div>
 
+        <!-- INOVASI FITUR 1: VOUCHER DISKON INPUT -->
+        <div style="background: #F8FAF6; border: 1.5px dashed var(--primary, #7CB342); border-radius: 12px; padding: 18px 20px; margin-bottom: 24px;">
+          <label style="display: block; font-weight: 700; font-size: 14px; color: var(--text, #191C1A); margin-bottom: 8px;">
+            🎟️ Punya Kode Voucher Diskon?
+          </label>
+          <div style="display: flex; gap: 10px;">
+            <input type="text" id="voucher-input" placeholder="Masukkan kode voucher..."
+                   style="flex: 1; padding: 11px 14px; border: 1.5px solid var(--border, #C2C9B5); border-radius: 8px; font-family: monospace; font-size: 14px; font-weight: 700; text-transform: uppercase;">
+            <button type="button" id="btn-apply-voucher"
+                    style="padding: 11px 20px; background: var(--primary, #7CB342); color: #fff; border: none; border-radius: 8px; font-weight: 700; font-size: 14px; cursor: pointer; white-space: nowrap;">
+              Terapkan
+            </button>
+            <button type="button" id="btn-remove-voucher" style="display: none; padding: 11px 16px; background: #FFF4F2; color: #BA1A1A; border: 1px solid #FFDAD6; border-radius: 8px; font-weight: 700; font-size: 13px; cursor: pointer;">
+              Batal
+            </button>
+          </div>
+          <div id="voucher-feedback" style="margin-top: 8px; font-size: 13px; display: none;"></div>
+          <!-- Hidden input yang dikirim ke backend -->
+          <input type="hidden" name="voucher_code" id="hidden-voucher-code" value="">
+        </div>
+
         <button type="submit"
                 style="display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; background: var(--primary, #7CB342); color: #FFFFFF; padding: 14px 24px; font-size: 16px; font-weight: 700; border: none; border-radius: 10px; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 4px 14px rgba(124, 179, 66, 0.35);"
                 onmouseover="this.style.background='var(--primary-dark, #3C6A00)'; this.style.transform='translateY(-1px)';"
@@ -143,10 +164,17 @@
           <span>Subtotal Produk (<span id="calc-qty">1</span>x)</span>
           <span style="font-weight: 600;" id="calc-subtotal">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
         </div>
-        <div style="display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 14px; color: var(--text-muted, #424939);">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; color: var(--text-muted, #424939);">
           <span>Estimasi Ongkir</span>
           <span style="font-weight: 600;" id="calc-ongkir">Rp 15.000</span>
         </div>
+
+        <!-- Baris Diskon Voucher -->
+        <div id="row-voucher-discount" style="display: none; justify-content: space-between; margin-bottom: 12px; font-size: 14px; color: #3C6A00; background: #EAEFD9; padding: 6px 10px; border-radius: 6px; font-weight: 700;">
+          <span id="label-voucher">🎟️ Diskon Voucher</span>
+          <span id="calc-diskon">- Rp 0</span>
+        </div>
+
         <hr style="border: 0; border-top: 1px solid var(--border, #C2C9B5); margin: 8px 0 12px 0;">
         <div style="display: flex; justify-content: space-between; align-items: center;">
           <span style="font-size: 14px; font-weight: 700; color: var(--text, #191C1A);">Estimasi Total</span>
@@ -168,7 +196,7 @@
 
   </div>
 
-  {{-- Script interaktif kalkulasi real-time di sisi client (UX bonus) --}}
+  {{-- Script interaktif kalkulasi real-time & voucher ajax di sisi client --}}
   <script>
     (function() {
       const price = {{ (int) $product->price }};
@@ -179,8 +207,21 @@
       const calcOngkir = document.getElementById('calc-ongkir');
       const calcTotal = document.getElementById('calc-total');
 
+      // Voucher elements
+      const voucherInput = document.getElementById('voucher-input');
+      const btnApplyVoucher = document.getElementById('btn-apply-voucher');
+      const btnRemoveVoucher = document.getElementById('btn-remove-voucher');
+      const voucherFeedback = document.getElementById('voucher-feedback');
+      const hiddenVoucherCode = document.getElementById('hidden-voucher-code');
+      const rowVoucherDiscount = document.getElementById('row-voucher-discount');
+      const labelVoucher = document.getElementById('label-voucher');
+      const calcDiskon = document.getElementById('calc-diskon');
+
+      let currentDiscount = 0;
+      let appliedVoucherCode = '';
+
       function formatRupiah(num) {
-        return 'Rp ' + num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        return 'Rp ' + Math.max(0, num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
       }
 
       function updateCalculation() {
@@ -188,7 +229,7 @@
         const selectedOption = courierSelect.options[courierSelect.selectedIndex];
         const ongkir = parseInt(selectedOption.getAttribute('data-ongkir')) || 15000;
         const subtotal = price * qty;
-        const total = subtotal + ongkir;
+        const total = Math.max(0, subtotal + ongkir - currentDiscount);
 
         if (calcQty) calcQty.textContent = qty;
         if (calcSubtotal) calcSubtotal.textContent = formatRupiah(subtotal);
@@ -196,8 +237,126 @@
         if (calcTotal) calcTotal.textContent = formatRupiah(total);
       }
 
-      if (qtyInput) qtyInput.addEventListener('input', updateCalculation);
+      if (qtyInput) qtyInput.addEventListener('input', function() {
+        // Jika qty berubah dan voucher sedang aktif, verifikasi ulang
+        if (appliedVoucherCode) {
+          revalidateVoucher();
+        } else {
+          updateCalculation();
+        }
+      });
+
       if (courierSelect) courierSelect.addEventListener('change', updateCalculation);
+
+      // Handle Apply Voucher via AJAX
+      function applyVoucher() {
+        const code = (voucherInput.value || '').trim();
+        if (!code) {
+          showFeedback('Silakan ketikkan kode voucher.', false);
+          return;
+        }
+
+        const qty = Math.max(1, parseInt(qtyInput.value) || 1);
+        const subtotal = price * qty;
+
+        btnApplyVoucher.disabled = true;
+        btnApplyVoucher.textContent = 'Mengecek...';
+
+        fetch('/voucher/apply', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+          },
+          body: JSON.stringify({ code: code, subtotal: subtotal })
+        })
+        .then(res => res.json().then(data => ({ status: res.status, body: data })))
+        .then(result => {
+          btnApplyVoucher.disabled = false;
+          btnApplyVoucher.textContent = 'Terapkan';
+
+          if (result.status === 200 && result.body.success) {
+            currentDiscount = result.body.discount_amount;
+            appliedVoucherCode = result.body.voucher_code;
+            hiddenVoucherCode.value = appliedVoucherCode;
+
+            voucherInput.readOnly = true;
+            btnApplyVoucher.style.display = 'none';
+            btnRemoveVoucher.style.display = 'inline-block';
+
+            rowVoucherDiscount.style.display = 'flex';
+            labelVoucher.textContent = '🎟️ Diskon (' + appliedVoucherCode + ')';
+            calcDiskon.textContent = '- ' + result.body.discount_formatted;
+
+            showFeedback(result.body.message, true);
+            updateCalculation();
+          } else {
+            showFeedback(result.body.message || 'Voucher tidak dapat digunakan.', false);
+          }
+        })
+        .catch(err => {
+          btnApplyVoucher.disabled = false;
+          btnApplyVoucher.textContent = 'Terapkan';
+          showFeedback('Terjadi kendala saat memeriksa voucher. Coba lagi.', false);
+        });
+      }
+
+      function revalidateVoucher() {
+        if (!appliedVoucherCode) return;
+        const qty = Math.max(1, parseInt(qtyInput.value) || 1);
+        const subtotal = price * qty;
+
+        fetch('/voucher/apply', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+          },
+          body: JSON.stringify({ code: appliedVoucherCode, subtotal: subtotal })
+        })
+        .then(res => res.json().then(data => ({ status: res.status, body: data })))
+        .then(result => {
+          if (result.status === 200 && result.body.success) {
+            currentDiscount = result.body.discount_amount;
+            calcDiskon.textContent = '- ' + result.body.discount_formatted;
+            updateCalculation();
+          } else {
+            removeVoucher();
+            showFeedback('Voucher dibatalkan karena syarat minimal belanja tidak terpenuhi.', false);
+          }
+        });
+      }
+
+      function removeVoucher() {
+        currentDiscount = 0;
+        appliedVoucherCode = '';
+        hiddenVoucherCode.value = '';
+        voucherInput.value = '';
+        voucherInput.readOnly = false;
+        btnApplyVoucher.style.display = 'inline-block';
+        btnRemoveVoucher.style.display = 'none';
+        rowVoucherDiscount.style.display = 'none';
+        voucherFeedback.style.display = 'none';
+        updateCalculation();
+      }
+
+      function showFeedback(msg, isSuccess) {
+        voucherFeedback.style.display = 'block';
+        voucherFeedback.style.color = isSuccess ? '#0F5132' : '#BA1A1A';
+        voucherFeedback.style.fontWeight = '600';
+        voucherFeedback.textContent = (isSuccess ? '✓ ' : '✕ ') + msg;
+      }
+
+      if (btnApplyVoucher) btnApplyVoucher.addEventListener('click', applyVoucher);
+      if (btnRemoveVoucher) btnRemoveVoucher.addEventListener('click', removeVoucher);
+      if (voucherInput) {
+        voucherInput.addEventListener('keypress', function(e) {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            applyVoucher();
+          }
+        });
+      }
     })();
   </script>
 @endsection

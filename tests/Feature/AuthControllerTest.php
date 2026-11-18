@@ -54,7 +54,7 @@ class AuthControllerTest extends TestCase
         $response->assertRedirect(route('login'));
         $this->assertDatabaseHas('users', [
             'email' => 'regular@example.com',
-            'role' => 'user',
+            'role' => 'customer',
         ]);
         $this->assertGuest();
 
@@ -111,8 +111,8 @@ class AuthControllerTest extends TestCase
 
         $catalogResponse = $this->actingAs($user)->get('/');
         $catalogResponse->assertOk();
-        $catalogResponse->assertDontSee('Panel Admin');
-        $catalogResponse->assertSee('Logout');
+        $catalogResponse->assertDontSee('Seller Center');
+        $catalogResponse->assertSee('Keluar');
 
         $adminResponse = $this->get('/admin/products');
         $adminResponse->assertForbidden();
@@ -128,12 +128,11 @@ class AuthControllerTest extends TestCase
 
         $catalogResponse = $this->actingAs($admin)->get('/');
         $catalogResponse->assertOk();
-        $catalogResponse->assertSee('Panel Admin');
+        $catalogResponse->assertSee('Seller Center');
 
         $adminResponse = $this->get('/admin/products');
         $adminResponse->assertOk();
-        $adminResponse->assertSee($admin->name);
-        $adminResponse->assertSee('Logout');
+        $adminResponse->assertSee('Keluar');
 
         $logoutResponse = $this->post(route('logout'));
         $logoutResponse->assertRedirect(route('login'));

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\Transaction;
+use App\Models\Voucher;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -75,12 +76,32 @@ class ProductController extends Controller
         }
 
         $subtotal = $product->price * $request->quantity;
-        $total_amount = $subtotal + $shipping_cost;
+
+        // Inovasi Fitur 1: Proses Voucher Diskon
+        $discountAmount = 0;
+        $voucherId = null;
+        $voucherCode = null;
+
+        if ($request->filled('voucher_code')) {
+            $code = strtoupper(trim($request->voucher_code));
+            $voucher = Voucher::where('code', $code)->first();
+
+            if ($voucher && $voucher->isValidFor($subtotal)) {
+                $discountAmount = $voucher->calculateDiscount($subtotal);
+                $voucherId = $voucher->id;
+                $voucherCode = $voucher->code;
+                $voucher->increment('used_count');
+            }
+        }
+
+        $total_amount = max(0, $subtotal + $shipping_cost - $discountAmount);
 
         $invoice_code = 'INV-2026-' . rand(1000, 9999);
 
         $transaction = Transaction::create([
             'user_id' => auth()->id(),
+            'voucher_id' => $voucherId,
+            'voucher_code' => $voucherCode,
             'invoice_code' => $invoice_code,
             'product_id' => $product->id,
             'product_name' => $product->name,
@@ -90,6 +111,7 @@ class ProductController extends Controller
             'courier' => $request->courier,
             'quantity' => $request->quantity,
             'shipping_cost' => $shipping_cost,
+            'discount_amount' => $discountAmount,
             'total_amount' => $total_amount,
             'status' => 'Pending',
         ]);
@@ -115,8 +137,69 @@ class ProductController extends Controller
     }
 
     public function myOrders() {
-        $transactions = Transaction::where('user_id', auth()->id())->latest()->get();
-        return view('pesanan_saya', compact('transactions'));
+        $userId = auth()->id();
+        $transactions = Transaction::where('user_id', $userId)->latest()->get();
+
+        // ==========================================
+        // STATISTIK & GRAFIK UNTUK USER (INOVASI)
+        // ==========================================
+        $userTotalOrders = $transactions->count();
+        $userTotalSpent = $transactions->whereIn('status', ['Paid', 'Shipped'])->sum('total_amount');
+        $userActiveOrders = $transactions->whereIn('status', ['Pending', 'Paid'])->count();
+        $userCompletedOrders = $transactions->where('status', 'Shipped')->count();
+
+        // 1. Tren Pengeluaran Belanja (6 Bulan Terakhir)
+        $chartUserMonthlyLabels = [];
+        $chartUserMonthlyValues = [];
+        for ($i = 5; $i >= 0; $i--) {
+            $monthStart = now()->subMonths($i)->startOfMonth();
+            $monthEnd   = now()->subMonths($i)->endOfMonth();
+            $monthLabel = now()->subMonths($i)->translatedFormat('M Y');
+
+            $spent = Transaction::where('user_id', $userId)
+                ->whereIn('status', ['Paid', 'Shipped'])
+                ->whereBetween('created_at', [$monthStart, $monthEnd])
+                ->sum('total_amount');
+
+            $chartUserMonthlyLabels[] = $monthLabel;
+            $chartUserMonthlyValues[] = (int) $spent;
+        }
+
+        // 2. Produk Favorit yang Paling Sering Dibeli
+        $favProducts = Transaction::where('user_id', $userId)
+            ->whereIn('status', ['Paid', 'Shipped'])
+            ->selectRaw('product_name, SUM(quantity) as total_qty')
+            ->groupBy('product_name')
+            ->orderByDesc('total_qty')
+            ->limit(5)
+            ->get();
+
+        $chartFavLabels = $favProducts->pluck('product_name')->toArray();
+        $chartFavValues = $favProducts->pluck('total_qty')->map(fn($v) => (int)$v)->toArray();
+
+        // 3. Distribusi Status Pesanan User
+        $userStatusGroup = $transactions->groupBy('status')->map->count();
+        $chartUserStatusLabels = ['Pending', 'Paid', 'Shipped', 'Cancelled'];
+        $chartUserStatusValues = [
+            (int) ($userStatusGroup['Pending'] ?? 0),
+            (int) ($userStatusGroup['Paid'] ?? 0),
+            (int) ($userStatusGroup['Shipped'] ?? 0),
+            (int) ($userStatusGroup['Cancelled'] ?? 0),
+        ];
+
+        return view('pesanan_saya', compact(
+            'transactions',
+            'userTotalOrders',
+            'userTotalSpent',
+            'userActiveOrders',
+            'userCompletedOrders',
+            'chartUserMonthlyLabels',
+            'chartUserMonthlyValues',
+            'chartFavLabels',
+            'chartFavValues',
+            'chartUserStatusLabels',
+            'chartUserStatusValues'
+        ));
     }
 
     // ==========================================
