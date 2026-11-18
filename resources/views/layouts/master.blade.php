@@ -11,6 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
   {{-- Sticky footer: footer selalu di bawah walau konten pendek --}}
   <style>
@@ -47,14 +48,25 @@
       </div>
 
       <div class="nav-links">
-        <a href="/" class="{{ Request::is('/') ? 'active' : '' }}">Katalog</a>
-        @can('access-admin')
-          <a href="/admin/transactions" class="admin-link">Panel Admin</a>
-        @endcan
-        <form method="POST" action="{{ route('logout') }}" class="nav-logout-form">
-          @csrf
-          <button type="submit" class="nav-logout">Logout</button>
-        </form>
+        @auth
+          <div class="nav-user-dropdown" x-data="{ open: false }" @click.away="open = false">
+            <div class="nav-user-chip" @click="open = !open" style="cursor: pointer;">
+              <span class="user-avatar-initial">{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</span>
+              <span class="user-display-name">{{ Auth::user()->name }}</span>
+            </div>
+            <div x-show="open" x-cloak class="dropdown-menu">
+              @can('access-admin')
+                <a href="/admin/transactions" class="dropdown-item">Panel Admin</a>
+              @endcan
+              <form method="POST" action="{{ route('logout') }}" class="nav-logout-form">
+                @csrf
+                <button type="submit" class="dropdown-item">Keluar</button>
+              </form>
+            </div>
+          </div>
+        @else
+          <a href="{{ route('login') }}" class="nav-btn-login">Masuk</a>
+        @endauth
       </div>
     </div>
   </nav>

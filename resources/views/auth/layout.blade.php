@@ -10,16 +10,24 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 <body class="auth-page">
     <main class="auth-shell">
         <div class="auth-logo">
-            <img src="{{ asset('wello-logo.png') }}" alt="Wello">
+            <a href="/" title="Kembali ke Beranda">
+                <img src="{{ asset('wello-logo.png') }}" alt="Wello">
+            </a>
         </div>
 
         <section class="auth-panel">
             @yield('auth-content')
         </section>
     </main>
+
+    <script>
+        lucide.createIcons();
+    </script>
 </body>
 </html>

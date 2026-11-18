@@ -65,18 +65,6 @@
         .admin-brand {
             display: flex;
             align-items: center;
-            gap: 12px;
-        }
-
-        .admin-badge {
-            background-color: #1B3022;
-            color: #FFFFFF;
-            font-size: 11px;
-            font-weight: 800;
-            padding: 4px 10px;
-            border-radius: 6px;
-            letter-spacing: 0.06em;
-            text-transform: uppercase;
         }
 
         .admin-title {
@@ -135,13 +123,6 @@
         .admin-link-store:hover {
             background-color: var(--primary);
             color: #FFFFFF;
-        }
-
-        .admin-user-name {
-            color: var(--text-main);
-            font-size: 13.5px;
-            font-weight: 700;
-            white-space: nowrap;
         }
 
         .admin-logout-button {
@@ -204,7 +185,6 @@
     <!-- TOPBAR -->
     <header class="admin-topbar">
         <div class="admin-brand">
-            <span class="admin-badge">Seller Center</span>
             <h1 class="admin-title">Wello Back-Office</h1>
         </div>
 
@@ -225,10 +205,9 @@
                 <span>Lihat Toko</span>
                 <i data-lucide="external-link" style="width: 14px; height: 14px;"></i>
             </a>
-            <span class="admin-user-name">{{ Auth::user()->name }}</span>
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
-                <button type="submit" class="admin-logout-button">Logout</button>
+                <button type="submit" class="admin-logout-button">Keluar</button>
             </form>
         </nav>
     </header>

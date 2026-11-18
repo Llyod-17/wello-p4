@@ -5,6 +5,18 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
+// =========================================================
+// JALUR FRONT-STORE (PUBLIK - SISI PEMBELI)
+// =========================================================
+Route::get('/', [ProductController::class, 'index'])->name('catalog');
+Route::get('/detail/{id}', [ProductController::class, 'show']);
+Route::get('/checkout/{id}', [ProductController::class, 'checkout']);
+Route::post('/checkout/proses', [ProductController::class, 'storeTransaction']);
+Route::get('/berhasil/{id}', [ProductController::class, 'success']);
+
+// =========================================================
+// JALUR AUTENTIKASI (GUEST & AUTH)
+// =========================================================
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
     Route::post('/login', [AuthController::class, 'authenticate']);
@@ -12,19 +24,11 @@ Route::middleware('guest')->group(function () {
     Route::post('/register', [AuthController::class, 'register'])->name('register.store');
 });
 
-Route::middleware('auth')->group(function () {
-    Route::get('/', [ProductController::class, 'index'])->name('catalog');
-    Route::get('/detail/{id}', [ProductController::class, 'show']);
-    Route::get('/checkout/{id}', [ProductController::class, 'checkout']);
-    Route::post('/checkout/proses', [ProductController::class, 'storeTransaction']);
-    Route::get('/berhasil/{id}', [ProductController::class, 'success']);
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-});
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
 // =========================================================
-// JALUR BACK-OFFICE / SELLER CENTER (SISI ADMIN: P8 & P9)
+// JALUR BACK-OFFICE / SELLER CENTER (SISI ADMIN - PROTEKSI AUTH)
 // =========================================================
-// Materi P8: Manajemen Pesanan Masuk
 Route::middleware(['auth', 'can:access-admin'])->group(function () {
     Route::get('/admin/transactions', [AdminController::class, 'transactions'])->name('admin.transactions');
     Route::post('/admin/transactions/{id}/status', [AdminController::class, 'updateStatus']);
