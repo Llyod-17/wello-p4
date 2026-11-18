@@ -159,9 +159,15 @@
                 @endif
               </p>
               @if($t->tracking_number)
-                <p style="margin: 4px 0 0 0; font-size: 13px; color: var(--primary-dark, #3C6A00);">
-                  No. Resi: <strong style="font-family: monospace;">{{ $t->tracking_number }}</strong>
-                </p>
+                <div x-data="{ copied: false }" style="margin-top: 6px; display: inline-flex; align-items: center; gap: 8px; background: #F8FAF5; padding: 4px 10px; border-radius: 6px; border: 1px dashed var(--border, #C2C9B5);">
+                  <span style="font-size: 12px; color: var(--text-light);">No. Resi:</span>
+                  <strong style="font-family: monospace; font-size: 13px; color: var(--text);">{{ $t->tracking_number }}</strong>
+                  <button type="button" 
+                          @click="navigator.clipboard.writeText('{{ $t->tracking_number }}'); copied = true; setTimeout(() => copied = false, 2000)"
+                          style="background: transparent; border: none; font-size: 11px; font-weight: 700; color: #3C6A00; cursor: pointer; text-decoration: underline; padding: 0;">
+                    <span x-text="copied ? '✓ Disalin' : 'Salin'"></span>
+                  </button>
+                </div>
               @endif
             </div>
 

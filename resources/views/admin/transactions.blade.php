@@ -83,74 +83,92 @@
 
     </div>
 
-    <!-- SECTION GRAFIK & DIAGRAM ANALITIK (INOVASI FITUR 3) -->
-    <div style="margin-bottom: 32px;">
-        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px;">
+    <!-- SECTION GRAFIK & DIAGRAM ANALITIK (ASIMETRIS + COLLAPSIBLE) -->
+    <div x-data="{ showVisualizer: true, activeTab: 'revenue' }" style="margin-bottom: 32px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
             <div>
-                <h2 style="font-size: 20px; font-weight: 800; color: var(--text-main); margin: 0 0 4px 0; display: flex; align-items: center; gap: 8px;">
+                <h2 style="font-size: 19px; font-weight: 800; color: var(--text-main); margin: 0 0 4px 0; display: flex; align-items: center; gap: 8px;">
                     <i data-lucide="line-chart" style="width: 22px; height: 22px; color: var(--primary);"></i>
                     Visualisasi &amp; Analitik Penjualan
                 </h2>
-                <p style="margin: 0; font-size: 13.5px; color: var(--text-muted);">
-                    Pantau tren omzet 7 hari terakhir, produk paling diminati, dan distribusi kurir secara real-time.
+                <p style="margin: 0; font-size: 13px; color: var(--text-muted);">
+                    Ringkasan performa omzet 7 hari, produk terlaris, dan status pesanan.
                 </p>
             </div>
+            
+            <!-- Toggle Expand/Collapse Visualizer Button -->
+            <button @click="showVisualizer = !showVisualizer" 
+                    type="button"
+                    style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 10px; background: var(--surface); border: 1px solid var(--border-subtle); color: var(--text-main); font-size: 12.5px; font-weight: 700; cursor: pointer; transition: all 0.2s; box-shadow: var(--shadow-subtle);">
+                <i data-lucide="sliders-horizontal" style="width: 14px; height: 14px; color: var(--primary);"></i>
+                <span x-text="showVisualizer ? 'Sembunyikan Grafik' : 'Tampilkan Grafik'"></span>
+                <i data-lucide="chevron-down" style="width: 14px; height: 14px; transition: transform 0.2s;" :style="showVisualizer ? 'transform: rotate(180deg)' : ''"></i>
+            </button>
         </div>
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 20px;">
-            <!-- Grafik 1: Tren Omzet 7 Hari -->
-            <div style="background: var(--surface); border-radius: 16px; border: 1px solid var(--border-subtle); padding: 22px; box-shadow: var(--shadow-subtle);">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                    <h3 style="font-size: 15px; font-weight: 700; color: var(--text-main); margin: 0; display: flex; align-items: center; gap: 8px;">
-                        <i data-lucide="trending-up" style="width: 17px; height: 17px; color: var(--primary);"></i>
-                        Tren Omzet 7 Hari Terakhir
-                    </h3>
-                    <span style="font-size: 11px; font-weight: 700; color: var(--primary); background: var(--primary-light); padding: 4px 8px; border-radius: 6px;">Harian (Rp)</span>
+        <div x-show="showVisualizer" x-collapse style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px;">
+            <!-- SISI KIRI: TAB UTAMA (OMZET & TOP PRODUK) -->
+            <div style="background: var(--surface); border-radius: 16px; border: 1px solid var(--border-subtle); padding: 22px; box-shadow: var(--shadow-subtle); display: flex; flex-direction: column;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 12px; flex-wrap: wrap; gap: 10px;">
+                    <!-- Tab Buttons -->
+                    <div style="display: flex; gap: 6px; background: #F1F4ED; padding: 4px; border-radius: 10px;">
+                        <button @click="activeTab = 'revenue'" 
+                                type="button"
+                                :style="activeTab === 'revenue' ? 'background: #fff; color: var(--primary); box-shadow: 0 1px 3px rgba(0,0,0,0.08);' : 'background: transparent; color: var(--text-muted);'"
+                                style="border: none; padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.15s;">
+                            <i data-lucide="trending-up" style="width: 14px; height: 14px;"></i>
+                            Tren Omzet (7 Hari)
+                        </button>
+                        <button @click="activeTab = 'products'" 
+                                type="button"
+                                :style="activeTab === 'products' ? 'background: #fff; color: #FF8F06; box-shadow: 0 1px 3px rgba(0,0,0,0.08);' : 'background: transparent; color: var(--text-muted);'"
+                                style="border: none; padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.15s;">
+                            <i data-lucide="award" style="width: 14px; height: 14px;"></i>
+                            Top 5 Terlaris
+                        </button>
+                    </div>
+
+                    <span x-show="activeTab === 'revenue'" style="font-size: 11px; font-weight: 700; color: var(--primary); background: var(--primary-light); padding: 4px 8px; border-radius: 6px;">Harian (Rp)</span>
+                    <span x-show="activeTab === 'products'" style="font-size: 11px; font-weight: 700; color: #856404; background: #FFF3CD; padding: 4px 8px; border-radius: 6px;">Qty Terjual</span>
                 </div>
-                <div style="position: relative; height: 240px; width: 100%;">
+
+                <!-- Canvas Omzet -->
+                <div x-show="activeTab === 'revenue'" style="position: relative; height: 320px; width: 100%; flex: 1;">
                     <canvas id="chartDailyRevenue"></canvas>
                 </div>
-            </div>
 
-            <!-- Grafik 2: Top 5 Produk Terlaris -->
-            <div style="background: var(--surface); border-radius: 16px; border: 1px solid var(--border-subtle); padding: 22px; box-shadow: var(--shadow-subtle);">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                    <h3 style="font-size: 15px; font-weight: 700; color: var(--text-main); margin: 0; display: flex; align-items: center; gap: 8px;">
-                        <i data-lucide="award" style="width: 17px; height: 17px; color: #FF8F06;"></i>
-                        Top 5 Produk Terlaris
-                    </h3>
-                    <span style="font-size: 11px; font-weight: 700; color: #856404; background: #FFF3CD; padding: 4px 8px; border-radius: 6px;">Qty Terjual</span>
-                </div>
-                <div style="position: relative; height: 240px; width: 100%;">
+                <!-- Canvas Top Produk -->
+                <div x-show="activeTab === 'products'" style="position: relative; height: 320px; width: 100%; flex: 1;">
                     <canvas id="chartTopProducts"></canvas>
                 </div>
             </div>
 
-            <!-- Grafik 3: Distribusi Status Pesanan -->
-            <div style="background: var(--surface); border-radius: 16px; border: 1px solid var(--border-subtle); padding: 22px; box-shadow: var(--shadow-subtle);">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                    <h3 style="font-size: 15px; font-weight: 700; color: var(--text-main); margin: 0; display: flex; align-items: center; gap: 8px;">
-                        <i data-lucide="pie-chart" style="width: 17px; height: 17px; color: #084298;"></i>
-                        Distribusi Status Pesanan
-                    </h3>
-                    <span style="font-size: 11px; font-weight: 700; color: #084298; background: #CFE2FF; padding: 4px 8px; border-radius: 6px;">Status</span>
+            <!-- SISI KANAN: DUA CARD RINGKAS (STATUS & KURIR) -->
+            <div style="display: flex; flex-direction: column; gap: 20px;">
+                <!-- Status Donut -->
+                <div style="background: var(--surface); border-radius: 16px; border: 1px solid var(--border-subtle); padding: 18px 20px; box-shadow: var(--shadow-subtle); flex: 1;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                        <h3 style="font-size: 13.5px; font-weight: 700; color: var(--text-main); margin: 0; display: flex; align-items: center; gap: 6px;">
+                            <i data-lucide="pie-chart" style="width: 15px; height: 15px; color: #084298;"></i>
+                            Status Pesanan
+                        </h3>
+                    </div>
+                    <div style="position: relative; height: 135px; width: 100%;">
+                        <canvas id="chartStatus"></canvas>
+                    </div>
                 </div>
-                <div style="position: relative; height: 240px; width: 100%;">
-                    <canvas id="chartStatus"></canvas>
-                </div>
-            </div>
 
-            <!-- Grafik 4: Preferensi Kurir Pengiriman -->
-            <div style="background: var(--surface); border-radius: 16px; border: 1px solid var(--border-subtle); padding: 22px; box-shadow: var(--shadow-subtle);">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                    <h3 style="font-size: 15px; font-weight: 700; color: var(--text-main); margin: 0; display: flex; align-items: center; gap: 8px;">
-                        <i data-lucide="truck" style="width: 17px; height: 17px; color: #0F5132;"></i>
-                        Preferensi Jasa Ekspedisi
-                    </h3>
-                    <span style="font-size: 11px; font-weight: 700; color: #0F5132; background: #D1E7DD; padding: 4px 8px; border-radius: 6px;">Total Order</span>
-                </div>
-                <div style="position: relative; height: 240px; width: 100%;">
-                    <canvas id="chartCourier"></canvas>
+                <!-- Kurir Mini Bar -->
+                <div style="background: var(--surface); border-radius: 16px; border: 1px solid var(--border-subtle); padding: 18px 20px; box-shadow: var(--shadow-subtle); flex: 1;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                        <h3 style="font-size: 13.5px; font-weight: 700; color: var(--text-main); margin: 0; display: flex; align-items: center; gap: 6px;">
+                            <i data-lucide="truck" style="width: 15px; height: 15px; color: #0F5132;"></i>
+                            Distribusi Kurir
+                        </h3>
+                    </div>
+                    <div style="position: relative; height: 135px; width: 100%;">
+                        <canvas id="chartCourier"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
@@ -170,30 +188,39 @@
                 </p>
             </div>
 
-            {{-- Filter Status Pesanan (Modul 6 UPRAK) --}}
-            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-                <span style="font-size: 13px; font-weight: 600; color: var(--text-muted);">Filter Status:</span>
-                <a href="/admin/transactions" 
-                   style="padding: 6px 12px; border-radius: 9999px; font-size: 12px; font-weight: 700; text-decoration: none; {{ empty($statusFilter) ? 'background: var(--primary); color: #fff;' : 'background: #F1F4ED; color: var(--text-muted);' }}">
-                   Semua
-                </a>
-                <a href="/admin/transactions?status=Pending" 
-                   style="padding: 6px 12px; border-radius: 9999px; font-size: 12px; font-weight: 700; text-decoration: none; {{ $statusFilter == 'Pending' ? 'background: #856404; color: #fff;' : 'background: #FFF3CD; color: #856404;' }}">
-                   Pending
-                </a>
-                <a href="/admin/transactions?status=Paid" 
-                   style="padding: 6px 12px; border-radius: 9999px; font-size: 12px; font-weight: 700; text-decoration: none; {{ $statusFilter == 'Paid' ? 'background: #084298; color: #fff;' : 'background: #CFE2FF; color: #084298;' }}">
-                   Paid
-                </a>
-                <a href="/admin/transactions?status=Shipped" 
-                   style="padding: 6px 12px; border-radius: 9999px; font-size: 12px; font-weight: 700; text-decoration: none; {{ $statusFilter == 'Shipped' ? 'background: #0F5132; color: #fff;' : 'background: #D1E7DD; color: #0F5132;' }}">
-                   Shipped
-                </a>
+            {{-- Filter & Search Pesanan (Modul 6 UPRAK) --}}
+            <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                <!-- Live Search Box (Client-side via JS) -->
+                <div style="position: relative; width: 220px;">
+                    <input type="text" id="adminSearchInput" placeholder="Cari invoice / pembeli..." 
+                           onkeyup="filterTransactionsTable()"
+                           style="width: 100%; padding: 7px 12px 7px 32px; border-radius: 9999px; border: 1px solid var(--border-subtle); font-size: 12.5px; background: #fff; outline: none; box-sizing: border-box; transition: border-color 0.15s;">
+                    <i data-lucide="search" style="width: 14px; height: 14px; position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: var(--text-light);"></i>
+                </div>
+
+                <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+                    <a href="/admin/transactions" 
+                       style="padding: 6px 12px; border-radius: 9999px; font-size: 12px; font-weight: 700; text-decoration: none; {{ empty($statusFilter) ? 'background: var(--primary); color: #fff;' : 'background: #F1F4ED; color: var(--text-muted);' }}">
+                       Semua
+                    </a>
+                    <a href="/admin/transactions?status=Pending" 
+                       style="padding: 6px 12px; border-radius: 9999px; font-size: 12px; font-weight: 700; text-decoration: none; {{ $statusFilter == 'Pending' ? 'background: #856404; color: #fff;' : 'background: #FFF3CD; color: #856404;' }}">
+                       Pending
+                    </a>
+                    <a href="/admin/transactions?status=Paid" 
+                       style="padding: 6px 12px; border-radius: 9999px; font-size: 12px; font-weight: 700; text-decoration: none; {{ $statusFilter == 'Paid' ? 'background: #084298; color: #fff;' : 'background: #CFE2FF; color: #084298;' }}">
+                       Paid
+                    </a>
+                    <a href="/admin/transactions?status=Shipped" 
+                       style="padding: 6px 12px; border-radius: 9999px; font-size: 12px; font-weight: 700; text-decoration: none; {{ $statusFilter == 'Shipped' ? 'background: #0F5132; color: #fff;' : 'background: #D1E7DD; color: #0F5132;' }}">
+                       Shipped
+                    </a>
+                </div>
             </div>
         </div>
 
         <div style="overflow-x: auto;">
-            <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+            <table id="transactionsTable" style="width: 100%; border-collapse: collapse; font-size: 14px;">
                 <thead>
                     <tr style="background-color: #F8FAF5; color: var(--text-main); text-align: left; border-bottom: 2px solid var(--border-subtle);">
                         <th style="padding: 14px 16px; font-weight: 700;">No. Invoice</th>
@@ -293,41 +320,43 @@
                                 @endif
                             </td>
 
-                            <!-- Action Buttons & Resi Modal/Form -->
-                            <td style="padding: 16px; vertical-align: top; text-align: center;">
-                                <div style="display: flex; flex-direction: column; gap: 8px; align-items: center;">
-                                    <form action="/admin/transactions/{{ $item->id }}/status" method="POST" style="display: flex; flex-direction: column; gap: 6px; width: 100%; max-width: 180px;">
+                            <!-- Action Buttons & Resi Modal/Form (CLEAN PILL & MODAL) -->
+                            <td style="padding: 16px; vertical-align: top;">
+                                <div style="display: flex; flex-direction: column; gap: 8px; align-items: stretch; max-width: 190px; margin: 0 auto;">
+                                    <form action="/admin/transactions/{{ $item->id }}/status" method="POST" style="display: flex; flex-direction: column; gap: 6px;">
                                         @csrf
-                                        <div style="display: flex; gap: 4px; justify-content: center;">
+                                        <!-- Quick Status Segmented Controls -->
+                                        <div style="display: flex; background: #F1F4ED; padding: 3px; border-radius: 8px; gap: 3px;">
                                             <button type="submit" name="status" value="Paid"
-                                                    style="flex: 1; background-color: #0B5ED7; color: #FFFFFF; border: none; padding: 5px 8px; border-radius: 6px; font-size: 11.5px; font-weight: 700; cursor: pointer;"
-                                                    title="Ubah status ke Paid">
+                                                    style="flex: 1; border: none; padding: 5px 6px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; transition: all 0.15s; {{ $item->status == 'Paid' ? 'background: #084298; color: #fff;' : 'background: transparent; color: var(--text-muted);' }}"
+                                                    title="Tandai Lunas">
                                                 Paid
                                             </button>
                                             <button type="submit" name="status" value="Pending"
-                                                    style="flex: 1; background-color: #6C757D; color: #FFFFFF; border: none; padding: 5px 8px; border-radius: 6px; font-size: 11.5px; cursor: pointer;"
+                                                    style="flex: 1; border: none; padding: 5px 6px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; transition: all 0.15s; {{ $item->status == 'Pending' ? 'background: #856404; color: #fff;' : 'background: transparent; color: var(--text-muted);' }}"
                                                     title="Reset ke Pending">
                                                 Pending
                                             </button>
                                         </div>
 
-                                        <!-- Form Input Resi untuk Status Shipped -->
-                                        <div style="display: flex; gap: 4px; margin-top: 4px;">
+                                        <!-- Resi Input Group -->
+                                        <div style="display: flex; border: 1px solid var(--border-subtle); border-radius: 8px; overflow: hidden; background: #fff;">
                                             <input type="text" name="tracking_number" value="{{ $item->tracking_number }}" placeholder="No. Resi"
-                                                   style="width: 100px; font-size: 11px; padding: 4px 6px; border: 1px solid var(--border-subtle); border-radius: 4px; outline: none;">
+                                                   style="flex: 1; min-width: 0; font-size: 11.5px; padding: 6px 8px; border: none; outline: none; font-family: monospace;">
                                             <button type="submit" name="status" value="Shipped"
-                                                    style="background-color: var(--primary); color: #FFFFFF; border: none; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; cursor: pointer; white-space: nowrap;">
-                                                Kirim
+                                                    style="background-color: var(--primary); color: #FFFFFF; border: none; padding: 6px 10px; font-size: 11.5px; font-weight: 700; cursor: pointer; white-space: nowrap; display: flex; align-items: center; gap: 3px;">
+                                                <i data-lucide="send" style="width: 11px; height: 11px;"></i>
+                                                <span>Kirim</span>
                                             </button>
                                         </div>
                                     </form>
 
                                     <!-- Tombol Hapus Pesanan Fiktif/Batal -->
-                                    <form action="/admin/transactions/{{ $item->id }}/delete" method="POST" onsubmit="return confirm('Hapus pesanan ini secara permanen?')">
+                                    <form action="/admin/transactions/{{ $item->id }}/delete" method="POST" onsubmit="return confirm('Hapus pesanan ini secara permanen?')" style="margin-top: 2px; text-align: center;">
                                         @csrf
                                         <button type="submit" 
-                                                style="background: transparent; color: #BA1A1A; border: 1px solid #FFDAD6; border-radius: 4px; padding: 3px 8px; font-size: 11px; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;">
-                                            <i data-lucide="trash-2" style="width: 12px; height: 12px;"></i>
+                                                style="background: none; border: none; color: #BA1A1A; font-size: 11px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; padding: 2px 4px; text-decoration: underline; text-underline-offset: 2px;">
+                                            <i data-lucide="trash-2" style="width: 11px; height: 11px;"></i>
                                             <span>Hapus Pesanan</span>
                                         </button>
                                     </form>
@@ -518,6 +547,16 @@
                     }
                 });
             }
+
+            // Client-Side Live Search
+            window.filterTransactionsTable = function() {
+                const query = document.getElementById('adminSearchInput').value.toLowerCase();
+                const rows = document.querySelectorAll('#transactionsTable tbody tr');
+                rows.forEach(row => {
+                    const text = row.innerText.toLowerCase();
+                    row.style.display = text.includes(query) ? '' : 'none';
+                });
+            };
         });
     </script>
 

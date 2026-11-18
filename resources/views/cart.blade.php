@@ -90,36 +90,41 @@
               </p>
             </div>
 
-            <!-- Form Update Qty -->
-            <div style="display: flex; align-items: center; gap: 8px;">
-              <form action="{{ route('cart.update', $item->id) }}" method="POST" style="display: flex; align-items: center; gap: 6px;">
+            <!-- Form Update Qty & Subtotal -->
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+              <form action="{{ route('cart.update', $item->id) }}" method="POST" style="display: inline-flex; align-items: center; border: 1.5px solid var(--border, #C2C9B5); border-radius: 8px; overflow: hidden; background: #FFF;">
                 @csrf
                 <button type="submit" name="quantity" value="{{ max(1, $item->quantity - 1) }}" 
-                        style="width: 32px; height: 32px; border: 1px solid var(--border, #C2C9B5); background: #F8FAF5; border-radius: 6px; font-weight: 800; cursor: pointer;"
+                        style="width: 32px; height: 32px; border: none; background: #F8FAF5; font-size: 16px; font-weight: 700; cursor: pointer; color: var(--text); display: flex; align-items: center; justify-content: center; transition: background 0.15s;"
+                        onmouseover="this.style.background='#ECEFEA'"
+                        onmouseout="this.style.background='#F8FAF5'"
                         {{ $item->quantity <= 1 ? 'disabled' : '' }}>-</button>
 
                 <input type="number" name="quantity" value="{{ $item->quantity }}" min="1" max="{{ $item->product->stock }}"
-                       style="width: 52px; text-align: center; padding: 6px 4px; border: 1.5px solid var(--border, #C2C9B5); border-radius: 6px; font-weight: 700;"
+                       style="width: 44px; height: 32px; border: none; text-align: center; font-weight: 800; font-size: 14px; outline: none;"
                        onchange="this.form.submit()">
 
                 <button type="submit" name="quantity" value="{{ min($item->product->stock, $item->quantity + 1) }}" 
-                        style="width: 32px; height: 32px; border: 1px solid var(--border, #C2C9B5); background: #F8FAF5; border-radius: 6px; font-weight: 800; cursor: pointer;"
+                        style="width: 32px; height: 32px; border: none; background: #F8FAF5; font-size: 16px; font-weight: 700; cursor: pointer; color: var(--text); display: flex; align-items: center; justify-content: center; transition: background 0.15s;"
+                        onmouseover="this.style.background='#ECEFEA'"
+                        onmouseout="this.style.background='#F8FAF5'"
                         {{ $item->quantity >= $item->product->stock ? 'disabled' : '' }}>+</button>
               </form>
-            </div>
 
-            <!-- Subtotal Item & Tombol Hapus -->
-            <div style="text-align: right; min-width: 110px;">
-              <div style="font-size: 16px; font-weight: 800; color: #BA1A1A; margin-bottom: 6px;">
-                Rp {{ number_format($item->subtotal, 0, ',', '.') }}
+              <!-- Subtotal Item & Tombol Hapus -->
+              <div style="text-align: right; min-width: 120px;">
+                <div style="font-size: 16px; font-weight: 800; color: #3C6A00; margin-bottom: 4px;">
+                  Rp {{ number_format($item->subtotal, 0, ',', '.') }}
+                </div>
+                <form action="{{ route('cart.remove', $item->id) }}" method="POST" onsubmit="return confirm('Hapus item ini dari keranjang?');">
+                  @csrf
+                  <button type="submit" 
+                          style="background: transparent; color: #BA1A1A; border: none; font-size: 12px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; padding: 0;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>
+                    <span>Hapus</span>
+                  </button>
+                </form>
               </div>
-              <form action="{{ route('cart.remove', $item->id) }}" method="POST" onsubmit="return confirm('Hapus item ini?');">
-                @csrf
-                <button type="submit" 
-                        style="background: transparent; color: #BA1A1A; border: none; font-size: 12px; font-weight: 700; cursor: pointer; text-decoration: underline;">
-                  Hapus
-                </button>
-              </form>
             </div>
 
           </div>
