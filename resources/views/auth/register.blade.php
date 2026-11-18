@@ -35,6 +35,17 @@
             </div>
 
             <div class="auth-field">
+                <label for="phone">Nomor Telepon (WhatsApp)</label>
+                <div class="input-icon-wrapper">
+                    <i data-lucide="phone" class="input-icon"></i>
+                    <input id="phone" name="phone" type="tel" value="{{ old('phone') }}" placeholder="081234567890" autocomplete="tel">
+                </div>
+                @error('phone')
+                    <span class="auth-error">{{ $message }}</span>
+                @enderror
+            </div>
+
+            <div class="auth-field">
                 <label for="password">Kata Sandi</label>
                 <div class="input-icon-wrapper">
                     <i data-lucide="lock" class="input-icon"></i>

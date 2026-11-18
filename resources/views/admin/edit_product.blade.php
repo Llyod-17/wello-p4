@@ -90,9 +90,39 @@
                             Nama Produk <span style="color: #BA1A1A;">*</span>
                         </label>
                         <input type="text" name="name" value="{{ old('name', $product->name) }}"
-                               placeholder="Contoh: Apel Fuji Manis Segar (kg)" required
-                               style="width: 100%; padding: 12px 16px; border: 1.5px solid var(--border-subtle); border-radius: 10px; font-size: 14.5px; font-family: inherit; box-sizing: border-box; outline: none;"
-                               onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='var(--border-subtle)'">
+                                placeholder="Contoh: Apel Fuji Manis Segar (kg)" required
+                                style="width: 100%; padding: 12px 16px; border: 1.5px solid var(--border-subtle); border-radius: 10px; font-size: 14.5px; font-family: inherit; box-sizing: border-box; outline: none;"
+                                onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='var(--border-subtle)'">
+                    </div>
+
+                    <!-- Category & Stock Fields (Modul 6 UPRAK) -->
+                    <div style="display: flex; gap: 20px; margin-bottom: 24px; flex-wrap: wrap;">
+                        <div style="flex: 1 1 200px;">
+                            <label style="font-weight: 700; font-size: 14px; color: var(--text-main); display: block; margin-bottom: 8px;">
+                                Kategori Produk <span style="color: #BA1A1A;">*</span>
+                            </label>
+                            <input type="text" name="category" list="category-list" value="{{ old('category', $product->category) }}"
+                                   placeholder="Pilih atau ketik kategori..." required
+                                   style="width: 100%; padding: 12px 16px; border: 1.5px solid var(--border-subtle); border-radius: 10px; font-size: 14.5px; font-family: inherit; box-sizing: border-box; outline: none;"
+                                   onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='var(--border-subtle)'">
+                            <datalist id="category-list">
+                                <option value="Sayuran Segar">
+                                <option value="Buah Segar">
+                                <option value="Bumbu Dapur">
+                                <option value="Minuman & Olahan">
+                                <option value="Daging & Ikan">
+                            </datalist>
+                        </div>
+
+                        <div style="flex: 1 1 160px;">
+                            <label style="font-weight: 700; font-size: 14px; color: var(--text-main); display: block; margin-bottom: 8px;">
+                                Update Stok (Unit) <span style="color: #BA1A1A;">*</span>
+                            </label>
+                            <input type="number" name="stock" value="{{ old('stock', $product->stock) }}" min="0" required
+                                   placeholder="Contoh: 25"
+                                   style="width: 100%; padding: 12px 16px; border: 1.5px solid var(--border-subtle); border-radius: 10px; font-size: 14.5px; font-family: inherit; box-sizing: border-box; outline: none;"
+                                   onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='var(--border-subtle)'">
+                        </div>
                     </div>
 
                     <!-- Price Field -->

@@ -17,52 +17,68 @@
         </div>
     @endif
 
-    <!-- STATS CARDS GRID -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 32px;">
+    <!-- STATS CARDS GRID (Modul 6 UPRAK) -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-bottom: 32px;">
 
         <!-- Card 1: Total Produk -->
-        <div style="background: var(--surface); padding: 24px; border-radius: 16px; border: 1px solid var(--border-subtle); box-shadow: var(--shadow-subtle); position: relative; overflow: hidden;">
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
-                <span style="font-size: 12px; font-weight: 800; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.05em;">
-                    Total Produk Etalase
+        <div style="background: var(--surface); padding: 20px 24px; border-radius: 16px; border: 1px solid var(--border-subtle); box-shadow: var(--shadow-subtle);">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                <span style="font-size: 11px; font-weight: 800; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.05em;">
+                    Total Produk
                 </span>
-                <div style="width: 40px; height: 40px; border-radius: 10px; background: #EAEFD9; color: var(--primary); display: flex; align-items: center; justify-content: center;">
-                    <i data-lucide="shopping-bag" style="width: 20px; height: 20px;"></i>
+                <div style="width: 36px; height: 36px; border-radius: 8px; background: #EAEFD9; color: var(--primary); display: flex; align-items: center; justify-content: center;">
+                    <i data-lucide="shopping-bag" style="width: 18px; height: 18px;"></i>
                 </div>
             </div>
-            <div style="font-size: 32px; font-weight: 800; color: var(--text-main); letter-spacing: -0.02em;">
-                {{ $totalProducts }} <span style="font-size: 15px; font-weight: 600; color: var(--text-muted);">Barang</span>
+            <div style="font-size: 28px; font-weight: 800; color: var(--text-main); letter-spacing: -0.02em;">
+                {{ $totalProducts }} <span style="font-size: 14px; font-weight: 600; color: var(--text-muted);">Item</span>
             </div>
         </div>
 
-        <!-- Card 2: Total Pesanan -->
-        <div style="background: var(--surface); padding: 24px; border-radius: 16px; border: 1px solid var(--border-subtle); box-shadow: var(--shadow-subtle); position: relative; overflow: hidden;">
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
-                <span style="font-size: 12px; font-weight: 800; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.05em;">
-                    Total Pesanan Masuk
+        <!-- Card 2: Pesanan Pending -->
+        <div style="background: var(--surface); padding: 20px 24px; border-radius: 16px; border: 1px solid var(--border-subtle); box-shadow: var(--shadow-subtle);">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                <span style="font-size: 11px; font-weight: 800; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.05em;">
+                    Pesanan Pending
                 </span>
-                <div style="width: 40px; height: 40px; border-radius: 10px; background: #FFF3CD; color: #856404; display: flex; align-items: center; justify-content: center;">
-                    <i data-lucide="inbox" style="width: 20px; height: 20px;"></i>
+                <div style="width: 36px; height: 36px; border-radius: 8px; background: #FFF3CD; color: #856404; display: flex; align-items: center; justify-content: center;">
+                    <i data-lucide="clock" style="width: 18px; height: 18px;"></i>
                 </div>
             </div>
-            <div style="font-size: 32px; font-weight: 800; color: var(--text-main); letter-spacing: -0.02em;">
-                {{ $totalTransactions }} <span style="font-size: 15px; font-weight: 600; color: var(--text-muted);">Transaksi</span>
+            <div style="font-size: 28px; font-weight: 800; color: #856404; letter-spacing: -0.02em;">
+                {{ $pendingCount }} <span style="font-size: 14px; font-weight: 600; color: var(--text-muted);">Menunggu</span>
             </div>
         </div>
 
-        <!-- Card 3: Total Omzet -->
-        <div style="background: var(--surface); padding: 24px; border-radius: 16px; border: 1px solid var(--border-subtle); box-shadow: var(--shadow-subtle); position: relative; overflow: hidden;">
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
-                <span style="font-size: 12px; font-weight: 800; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.05em;">
-                    Total Omzet Penjualan
+        <!-- Card 3: Pesanan Sukses (Paid + Shipped) -->
+        <div style="background: var(--surface); padding: 20px 24px; border-radius: 16px; border: 1px solid var(--border-subtle); box-shadow: var(--shadow-subtle);">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                <span style="font-size: 11px; font-weight: 800; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.05em;">
+                    Pesanan Terverifikasi
                 </span>
-                <div style="width: 40px; height: 40px; border-radius: 10px; background: #D1E7DD; color: #0F5132; display: flex; align-items: center; justify-content: center;">
-                    <i data-lucide="banknote" style="width: 20px; height: 20px;"></i>
+                <div style="width: 36px; height: 36px; border-radius: 8px; background: #CFE2FF; color: #084298; display: flex; align-items: center; justify-content: center;">
+                    <i data-lucide="check-circle" style="width: 18px; height: 18px;"></i>
                 </div>
             </div>
-            <div style="font-size: 28px; font-weight: 800; color: var(--primary); letter-spacing: -0.02em;">
+            <div style="font-size: 28px; font-weight: 800; color: #084298; letter-spacing: -0.02em;">
+                {{ $successCount }} <span style="font-size: 14px; font-weight: 600; color: var(--text-muted);">Paid / Shipped</span>
+            </div>
+        </div>
+
+        <!-- Card 4: Total Omzet Bersih (Hanya Paid / Shipped) -->
+        <div style="background: var(--surface); padding: 20px 24px; border-radius: 16px; border: 1px solid var(--border-subtle); box-shadow: var(--shadow-subtle);">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                <span style="font-size: 11px; font-weight: 800; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.05em;">
+                    Total Omzet Bersih
+                </span>
+                <div style="width: 36px; height: 36px; border-radius: 8px; background: #D1E7DD; color: #0F5132; display: flex; align-items: center; justify-content: center;">
+                    <i data-lucide="banknote" style="width: 18px; height: 18px;"></i>
+                </div>
+            </div>
+            <div style="font-size: 24px; font-weight: 800; color: var(--primary); letter-spacing: -0.02em;">
                 Rp {{ number_format($totalRevenue, 0, ',', '.') }}
             </div>
+            <div style="font-size: 11px; color: var(--text-light); margin-top: 4px;">*Eksklusi pesanan Pending</div>
         </div>
 
     </div>
@@ -70,19 +86,36 @@
     <!-- MAIN TRANSACTIONS TABLE CARD -->
     <div style="background: var(--surface); border-radius: 16px; border: 1px solid var(--border-subtle); box-shadow: var(--shadow-card); padding: 28px;">
         
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--border-subtle); flex-wrap: wrap; gap: 12px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--border-subtle); flex-wrap: wrap; gap: 16px;">
             <div>
                 <h2 style="margin: 0 0 4px 0; font-size: 18px; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 8px;">
                     <i data-lucide="list-orders" style="width: 20px; height: 20px; color: var(--primary);"></i>
                     Daftar Pesanan Masuk
                 </h2>
                 <p style="margin: 0; font-size: 13.5px; color: var(--text-muted);">
-                    Diurutkan otomatis dari pesanan yang paling baru masuk (<code>latest()</code>).
+                    Kelola status pesanan, nomor resi kurir, dan hapus pesanan fiktif.
                 </p>
             </div>
-            <div style="font-size: 13px; font-weight: 700; color: var(--primary); background: var(--primary-light); padding: 6px 14px; border-radius: 9999px; display: flex; align-items: center; gap: 6px;">
-                <i data-lucide="clock" style="width: 14px; height: 14px;"></i>
-                <span>{{ $transactions->count() }} Transaksi</span>
+
+            {{-- Filter Status Pesanan (Modul 6 UPRAK) --}}
+            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                <span style="font-size: 13px; font-weight: 600; color: var(--text-muted);">Filter Status:</span>
+                <a href="/admin/transactions" 
+                   style="padding: 6px 12px; border-radius: 9999px; font-size: 12px; font-weight: 700; text-decoration: none; {{ empty($statusFilter) ? 'background: var(--primary); color: #fff;' : 'background: #F1F4ED; color: var(--text-muted);' }}">
+                   Semua
+                </a>
+                <a href="/admin/transactions?status=Pending" 
+                   style="padding: 6px 12px; border-radius: 9999px; font-size: 12px; font-weight: 700; text-decoration: none; {{ $statusFilter == 'Pending' ? 'background: #856404; color: #fff;' : 'background: #FFF3CD; color: #856404;' }}">
+                   Pending
+                </a>
+                <a href="/admin/transactions?status=Paid" 
+                   style="padding: 6px 12px; border-radius: 9999px; font-size: 12px; font-weight: 700; text-decoration: none; {{ $statusFilter == 'Paid' ? 'background: #084298; color: #fff;' : 'background: #CFE2FF; color: #084298;' }}">
+                   Paid
+                </a>
+                <a href="/admin/transactions?status=Shipped" 
+                   style="padding: 6px 12px; border-radius: 9999px; font-size: 12px; font-weight: 700; text-decoration: none; {{ $statusFilter == 'Shipped' ? 'background: #0F5132; color: #fff;' : 'background: #D1E7DD; color: #0F5132;' }}">
+                   Shipped
+                </a>
             </div>
         </div>
 
@@ -168,32 +201,57 @@
                                         <i data-lucide="package-check" style="width: 12px; height: 12px;"></i>
                                         Shipped
                                     </span>
+                                    @if($item->tracking_number)
+                                        <div style="font-size: 11px; font-family: monospace; font-weight: 700; color: #0F5132; margin-top: 4px;">
+                                            Resi: {{ $item->tracking_number }}
+                                        </div>
+                                    @endif
+                                @else
+                                    <span style="background-color: #F8D7DA; color: #842029; padding: 6px 12px; border-radius: 9999px; font-weight: 700; font-size: 12px;">
+                                        {{ $item->status }}
+                                    </span>
                                 @endif
                             </td>
 
-                            <!-- Action Buttons -->
+                            <!-- Action Buttons & Resi Modal/Form -->
                             <td style="padding: 16px; vertical-align: top; text-align: center;">
-                                <form action="/admin/transactions/{{ $item->id }}/status" method="POST" style="display: flex; gap: 6px; justify-content: center; flex-wrap: wrap;">
-                                    @csrf
+                                <div style="display: flex; flex-direction: column; gap: 8px; align-items: center;">
+                                    <form action="/admin/transactions/{{ $item->id }}/status" method="POST" style="display: flex; flex-direction: column; gap: 6px; width: 100%; max-width: 180px;">
+                                        @csrf
+                                        <div style="display: flex; gap: 4px; justify-content: center;">
+                                            <button type="submit" name="status" value="Paid"
+                                                    style="flex: 1; background-color: #0B5ED7; color: #FFFFFF; border: none; padding: 5px 8px; border-radius: 6px; font-size: 11.5px; font-weight: 700; cursor: pointer;"
+                                                    title="Ubah status ke Paid">
+                                                Paid
+                                            </button>
+                                            <button type="submit" name="status" value="Pending"
+                                                    style="flex: 1; background-color: #6C757D; color: #FFFFFF; border: none; padding: 5px 8px; border-radius: 6px; font-size: 11.5px; cursor: pointer;"
+                                                    title="Reset ke Pending">
+                                                Pending
+                                            </button>
+                                        </div>
 
-                                    <button type="submit" name="status" value="Paid"
-                                            style="background-color: #0B5ED7; color: #FFFFFF; border: none; padding: 6px 10px; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; transition: opacity 0.2s;"
-                                            title="Ubah status ke Paid">
-                                        Set Lunas
-                                    </button>
+                                        <!-- Form Input Resi untuk Status Shipped -->
+                                        <div style="display: flex; gap: 4px; margin-top: 4px;">
+                                            <input type="text" name="tracking_number" value="{{ $item->tracking_number }}" placeholder="No. Resi"
+                                                   style="width: 100px; font-size: 11px; padding: 4px 6px; border: 1px solid var(--border-subtle); border-radius: 4px; outline: none;">
+                                            <button type="submit" name="status" value="Shipped"
+                                                    style="background-color: var(--primary); color: #FFFFFF; border: none; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; cursor: pointer; white-space: nowrap;">
+                                                Kirim
+                                            </button>
+                                        </div>
+                                    </form>
 
-                                    <button type="submit" name="status" value="Shipped"
-                                            style="background-color: var(--primary-container); color: #FFFFFF; border: none; padding: 6px 10px; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; transition: opacity 0.2s;"
-                                            title="Ubah status ke Shipped">
-                                        Set Dikirim
-                                    </button>
-
-                                    <button type="submit" name="status" value="Pending"
-                                            style="background-color: #6C757D; color: #FFFFFF; border: none; padding: 6px 10px; border-radius: 6px; font-size: 12px; cursor: pointer; transition: opacity 0.2s;"
-                                            title="Reset ke Pending">
-                                        Reset
-                                    </button>
-                                </form>
+                                    <!-- Tombol Hapus Pesanan Fiktif/Batal -->
+                                    <form action="/admin/transactions/{{ $item->id }}/delete" method="POST" onsubmit="return confirm('Hapus pesanan ini secara permanen?')">
+                                        @csrf
+                                        <button type="submit" 
+                                                style="background: transparent; color: #BA1A1A; border: 1px solid #FFDAD6; border-radius: 4px; padding: 3px 8px; font-size: 11px; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;">
+                                            <i data-lucide="trash-2" style="width: 12px; height: 12px;"></i>
+                                            <span>Hapus Pesanan</span>
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
 
                         </tr>

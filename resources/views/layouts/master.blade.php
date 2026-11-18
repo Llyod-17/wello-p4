@@ -55,9 +55,10 @@
               <span class="user-display-name">{{ Auth::user()->name }}</span>
             </div>
             <div x-show="open" x-cloak class="dropdown-menu">
-              @can('access-admin')
-                <a href="/admin/transactions" class="dropdown-item">Panel Admin</a>
-              @endcan
+              @if(Auth::user()->role === 'admin')
+                <a href="/admin/transactions" class="dropdown-item">Seller Center</a>
+              @endif
+              <a href="{{ route('my-orders') }}" class="dropdown-item">Pesanan Saya</a>
               <form method="POST" action="{{ route('logout') }}" class="nav-logout-form">
                 @csrf
                 <button type="submit" class="dropdown-item">Keluar</button>

@@ -10,9 +10,14 @@ use Illuminate\Support\Facades\Route;
 // =========================================================
 Route::get('/', [ProductController::class, 'index'])->name('catalog');
 Route::get('/detail/{id}', [ProductController::class, 'show']);
-Route::get('/checkout/{id}', [ProductController::class, 'checkout']);
-Route::post('/checkout/proses', [ProductController::class, 'storeTransaction']);
-Route::get('/berhasil/{id}', [ProductController::class, 'success']);
+
+// Proteksi Customer (Auth)
+Route::middleware('auth')->group(function () {
+    Route::get('/checkout/{id}', [ProductController::class, 'checkout']);
+    Route::post('/checkout/proses', [ProductController::class, 'storeTransaction']);
+    Route::get('/berhasil/{id}', [ProductController::class, 'success']);
+    Route::get('/pesanan-saya', [ProductController::class, 'myOrders'])->name('my-orders');
+});
 
 // =========================================================
 // JALUR AUTENTIKASI (GUEST & AUTH)
@@ -27,11 +32,12 @@ Route::middleware('guest')->group(function () {
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
 // =========================================================
-// JALUR BACK-OFFICE / SELLER CENTER (SISI ADMIN - PROTEKSI AUTH)
+// JALUR BACK-OFFICE / SELLER CENTER (SISI ADMIN - PROTEKSI AUTH & ADMIN)
 // =========================================================
-Route::middleware(['auth', 'can:access-admin'])->group(function () {
+Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/transactions', [AdminController::class, 'transactions'])->name('admin.transactions');
     Route::post('/admin/transactions/{id}/status', [AdminController::class, 'updateStatus']);
+    Route::post('/admin/transactions/{id}/delete', [AdminController::class, 'deleteTransaction']);
 
     // Materi P9: Manajemen Katalog Produk & Upload Gambar
     Route::get('/admin/products', [AdminController::class, 'products']);

@@ -24,9 +24,22 @@
 
     <!-- BAGIAN KANAN: SPESIFIKASI DARI DATABASE -->
     <div style="width: 60%; padding-left: 40px;">
+        <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 8px;">
+            <span style="font-size: 12px; font-weight: 700; text-transform: uppercase; color: #3C6A00; background: #EAEFD9; padding: 4px 10px; border-radius: 9999px;">
+                {{ $product->category ?? 'Umum' }}
+            </span>
+            <span style="font-size: 13px; font-weight: 600; color: {{ $product->stock > 0 ? '#424939' : '#BA1A1A' }};">
+                @if($product->stock > 0)
+                    Tersedia: <strong>{{ $product->stock }}</strong> unit
+                @else
+                    <strong>Stok Habis</strong>
+                @endif
+            </span>
+        </div>
+
         <h1 style="margin-top: 0; font-size: 28px;">{{ $product->name }}</h1>
 
-        <h2 style="color: #E63946; border-bottom: 1px solid #eee; padding-bottom: 15px;">
+        <h2 style="color: #7CB342; border-bottom: 1px solid #eee; padding-bottom: 15px;">
             Rp {{ number_format($product->price, 0, ',', '.') }}
         </h2>
 
@@ -39,10 +52,17 @@
 
         <!-- Tombol Keranjang: Bawa ID Produk untuk P7 Nanti -->
         <div style="margin-top: 30px;">
-            <a href="/checkout/{{ $product->id }}"
-               style="display: inline-block; background-color: #28A745; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold;">
-                + Masukkan Keranjang
-            </a>
+            @if($product->stock > 0)
+                <a href="/checkout/{{ $product->id }}"
+                   style="display: inline-block; background-color: #7CB342; color: white; padding: 12px 25px; text-decoration: none; border-radius: 8px; font-weight: bold;">
+                    Beli & Checkout Sekarang
+                </a>
+            @else
+                <button type="button" disabled
+                        style="display: inline-block; background-color: #E0E3DB; color: #8C9382; padding: 12px 25px; border-radius: 8px; font-weight: bold; border: none; cursor: not-allowed;">
+                    Produk Sedang Habis
+                </button>
+            @endif
         </div>
     </div>
 </div>

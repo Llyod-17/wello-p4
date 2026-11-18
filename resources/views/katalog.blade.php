@@ -15,25 +15,40 @@
   {{-- Sorting & Search Info Bar (P11) --}}
   <div class="catalog-controls">
     <div class="catalog-info" id="catalog-info">
-      @if(request('search'))
-        Ditemukan <strong>{{ $products->count() }}</strong> produk untuk kata kunci "<strong>{{ request('search') }}</strong>"
-        <a href="{{ request('sort') ? '/?sort=' . request('sort') : '/' }}" style="margin-left: 8px; color: var(--accent); font-weight: 600; text-decoration: underline;">Hapus Filter</a>
+      @if(request('search') || request('category'))
+        Ditemukan <strong>{{ $products->count() }}</strong> produk
+        @if(request('search')) untuk kata kunci "<strong>{{ request('search') }}</strong>"@endif
+        @if(request('category')) dalam kategori "<strong>{{ request('category') }}</strong>"@endif
+        <a href="/" style="margin-left: 8px; color: var(--accent); font-weight: 600; text-decoration: underline;">Reset Filter</a>
       @else
         Menampilkan <strong>{{ $products->count() }}</strong> produk berkualitas
       @endif
     </div>
 
-    {{-- Auto-Submit Sorting Bar (SOP 3 - P11) --}}
-    <form action="/" method="GET" class="sort-form-container">
+    {{-- Category & Sorting Bar --}}
+    <form action="/" method="GET" class="sort-form-container" style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
       @if(request('search'))
         <input type="hidden" name="search" value="{{ request('search') }}">
       @endif
-      <label for="sort" class="sort-label">Urutkan Harga:</label>
-      <select name="sort" id="sort" onchange="this.form.submit()" class="sort-select">
-        <option value="" {{ request('sort') == '' ? 'selected' : '' }}>Terbaru / Default</option>
-        <option value="termurah" {{ request('sort') == 'termurah' ? 'selected' : '' }}>Harga: Rendah ke Tinggi</option>
-        <option value="termahal" {{ request('sort') == 'termahal' ? 'selected' : '' }}>Harga: Tinggi ke Rendah</option>
-      </select>
+
+      <div style="display: flex; align-items: center; gap: 6px;">
+        <label for="category" class="sort-label">Kategori:</label>
+        <select name="category" id="category" onchange="this.form.submit()" class="sort-select">
+          <option value="">Semua Kategori</option>
+          @foreach($categories as $cat)
+            <option value="{{ $cat }}" {{ request('category') == $cat ? 'selected' : '' }}>{{ $cat }}</option>
+          @endforeach
+        </select>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 6px;">
+        <label for="sort" class="sort-label">Urutan:</label>
+        <select name="sort" id="sort" onchange="this.form.submit()" class="sort-select">
+          <option value="" {{ request('sort') == '' ? 'selected' : '' }}>Terbaru</option>
+          <option value="termurah" {{ request('sort') == 'termurah' ? 'selected' : '' }}>Harga: Rendah ke Tinggi</option>
+          <option value="termahal" {{ request('sort') == 'termahal' ? 'selected' : '' }}>Harga: Tinggi ke Rendah</option>
+        </select>
+      </div>
     </form>
   </div>
 
@@ -51,9 +66,25 @@
         @endif
       </div>
       <div class="card-body">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+          <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--primary-dark, #3C6A00); background: #EAEFD9; padding: 2px 8px; border-radius: 9999px;">
+            {{ $p->category ?? 'Umum' }}
+          </span>
+          <span style="font-size: 12px; color: {{ $p->stock > 0 ? 'var(--text-muted)' : '#BA1A1A' }}; font-weight: 600;">
+            @if($p->stock > 0)
+              Stok: {{ $p->stock }}
+            @else
+              Stok Habis
+            @endif
+          </span>
+        </div>
         <h3 class="card-title">{{ $p->name }}</h3>
         <p class="card-price">Rp {{ number_format($p->price, 0, ',', '.') }}</p>
-        <a href="/detail/{{ $p->id }}" class="btn btn-primary btn-block">Lihat Detail</a>
+        @if($p->stock > 0)
+          <a href="/detail/{{ $p->id }}" class="btn btn-primary btn-block">Lihat Detail</a>
+        @else
+          <button type="button" class="btn btn-block" disabled style="background: #E0E3DB; color: #8C9382; cursor: not-allowed; border: none;">Stok Habis</button>
+        @endif
       </div>
     </div>
     @empty

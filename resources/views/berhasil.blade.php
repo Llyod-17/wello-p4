@@ -28,11 +28,20 @@
 
       <table style="width: 100%; border-collapse: collapse; font-size: 14.5px;">
         <tr style="border-bottom: 1px solid #F2F4EF;">
-          <td style="padding: 12px 0; color: var(--text-muted, #424939);">Nomor Invoice / Resi</td>
+          <td style="padding: 12px 0; color: var(--text-muted, #424939);">Nomor Invoice</td>
           <td style="padding: 12px 0; text-align: right; font-weight: 700; color: #0B5ED7; font-family: monospace; font-size: 15px;">
             {{ $transaction->invoice_code }}
           </td>
         </tr>
+
+        @if($transaction->tracking_number)
+        <tr style="border-bottom: 1px solid #F2F4EF;">
+          <td style="padding: 12px 0; color: var(--text-muted, #424939);">Nomor Resi Pengiriman</td>
+          <td style="padding: 12px 0; text-align: right; font-weight: 700; color: var(--primary-dark, #3C6A00); font-family: monospace; font-size: 15px;">
+            {{ $transaction->tracking_number }}
+          </td>
+        </tr>
+        @endif
 
         <tr style="border-bottom: 1px solid #F2F4EF;">
           <td style="padding: 12px 0; color: var(--text-muted, #424939);">Waktu Transaksi</td>

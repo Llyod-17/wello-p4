@@ -43,6 +43,8 @@
                     <tr style="background-color: #F8FAF5; color: var(--text-main); text-align: left; border-bottom: 2px solid var(--border-subtle);">
                         <th style="padding: 16px 20px; font-weight: 700; width: 88px;">Foto</th>
                         <th style="padding: 16px 20px; font-weight: 700;">Info Produk</th>
+                        <th style="padding: 16px 20px; font-weight: 700;">Kategori</th>
+                        <th style="padding: 16px 20px; font-weight: 700;">Stok</th>
                         <th style="padding: 16px 20px; font-weight: 700;">Harga Satuan</th>
                         <th style="padding: 16px 20px; font-weight: 700;">Tanggal Input</th>
                         <th style="padding: 16px 20px; font-weight: 700; text-align: right;">Aksi</th>
@@ -72,6 +74,24 @@
                                 <div style="font-size: 13px; color: var(--text-muted); max-width: 440px; line-height: 1.5;">
                                     {{ \Illuminate\Support\Str::limit($product->description, 85) }}
                                 </div>
+                            </td>
+
+                            <!-- Category -->
+                            <td style="padding: 16px 20px; vertical-align: middle;">
+                                <span style="display: inline-block; padding: 4px 10px; background-color: #E8F5E9; color: #2E7D32; font-weight: 700; font-size: 12px; border-radius: 6px; white-space: nowrap;">
+                                    {{ $product->category ?? 'Umum' }}
+                                </span>
+                            </td>
+
+                            <!-- Stock -->
+                            <td style="padding: 16px 20px; vertical-align: middle;">
+                                @if($product->stock <= 0)
+                                    <span style="display: inline-block; padding: 4px 10px; background-color: #FFEBEE; color: #C62828; font-weight: 700; font-size: 12px; border-radius: 6px;">Habis</span>
+                                @elseif($product->stock <= 5)
+                                    <span style="display: inline-block; padding: 4px 10px; background-color: #FFF3E0; color: #E65100; font-weight: 700; font-size: 12px; border-radius: 6px;">{{ $product->stock }} (Menipis)</span>
+                                @else
+                                    <span style="font-weight: 700; color: var(--text-main);">{{ $product->stock }}</span>
+                                @endif
                             </td>
 
                             <!-- Price -->
@@ -114,7 +134,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" style="text-align: center; padding: 48px; color: var(--text-light);">
+                            <td colspan="7" style="text-align: center; padding: 48px; color: var(--text-light);">
                                 <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
                                     <i data-lucide="package-x" style="width: 40px; height: 40px; color: var(--border-subtle);"></i>
                                     <span style="font-weight: 700; font-size: 15px; color: var(--text-main);">Belum ada produk di etalase</span>
