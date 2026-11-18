@@ -16,13 +16,19 @@
     </div>
   @endif
 
-  {{-- Store Banner (Brand Customization - P11) --}}
+  {{-- Store Banner (Sapaan Dinamis & Penyesuaian Brand) --}}
   <div class="store-banner">
-    <div>
-      <span class="badge badge-accent mb-sm">Pasar Segar &amp; Organik</span>
-      <h1>Wello Vitality Grocer</h1>
-      <p>Pasokan bahan makanan segar, sayur-mayur, dan buah pilihan berkualitas tinggi langsung untuk keluarga Anda.</p>
+    <div style="position: relative; z-index: 2;">
+      @auth
+        <h1>Selamat Datang, {{ Auth::user()->name }}! 👋</h1>
+        <p>Siap penuhi kebutuhan dapur hari ini? Temukan aneka buah manis, sayur renyah, dan rempah segar pilihan langsung dari kebun terbaik.</p>
+      @else
+        <h1>Selamat Datang di Wello! 🌿</h1>
+        <p>Belanja sayur segar, buah pilihan, dan kebutuhan dapur berkualitas tinggi — higienis, hemat, dan diantar cepat langsung ke rumah Anda.</p>
+      @endauth
     </div>
+
+    <!-- Ornamen Badge Kanan (Memberi Sentuhan Visual Modern & Tidak Polos) -->
   </div>
 
   {{-- Sorting & Search Info Bar (P11) --}}
@@ -103,7 +109,7 @@
                 @csrf
                 <input type="hidden" name="product_id" value="{{ $p->id }}">
                 <input type="hidden" name="quantity" value="1">
-                <button type="submit" 
+                <button type="submit"
                         style="width: 40px; height: 100%; min-height: 40px; border: 1.5px solid var(--primary, #7CB342); background: #FFFFFF; color: var(--primary-dark, #3C6A00); border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: all 0.2s ease;"
                         onmouseover="this.style.background='#EAEFD9';"
                         onmouseout="this.style.background='#FFFFFF';"

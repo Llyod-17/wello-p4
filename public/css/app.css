@@ -753,28 +753,53 @@ h4 { font-size: 1rem; font-weight: 600; line-height: 1.5; }
 
 /* --- Marketplace Store Banner & Controls --- */
 .store-banner {
-  background: linear-gradient(135deg, var(--primary-dark) 0%, #294A33 100%);
+  position: relative;
+  overflow: hidden;
+  background-color: #1A3622;
+  background-image: 
+    radial-gradient(circle at 85% 20%, rgba(124, 179, 66, 0.45) 0%, transparent 40%),
+    radial-gradient(circle at 95% 85%, rgba(255, 143, 6, 0.25) 0%, transparent 35%),
+    radial-gradient(circle at 10% 90%, rgba(60, 106, 0, 0.4) 0%, transparent 45%),
+    url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.04' fill-rule='evenodd'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E"),
+    linear-gradient(135deg, #22472C 0%, #162E1D 60%, #0F2114 100%);
   color: white;
   border-radius: var(--radius-lg);
-  padding: var(--space-2xl) var(--space-xl);
+  padding: 44px 40px;
   margin-bottom: var(--space-xl);
   display: flex;
-  flex-direction: column;
-  gap: var(--space-md);
-  box-shadow: var(--shadow-md);
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-xl);
+  box-shadow: 0 16px 36px -12px rgba(20, 48, 27, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+}
+
+.store-banner::after {
+  content: '';
+  position: absolute;
+  top: -60px;
+  right: -60px;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(124, 179, 66, 0.25) 0%, transparent 70%);
+  pointer-events: none;
 }
 
 .store-banner h1 {
   font-size: 2.25rem;
   font-weight: 800;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.025em;
   color: #FFFFFF;
+  line-height: 1.2;
+  margin-bottom: 8px;
 }
 
 .store-banner p {
-  font-size: 1.125rem;
-  opacity: 0.9;
-  max-width: 640px;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 600px;
+  margin: 0;
 }
 
 .catalog-controls {
